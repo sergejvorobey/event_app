@@ -1,4 +1,5 @@
 import 'package:event_app/core/ui/theme/app_colors.dart';
+import 'package:event_app/core/ui/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class CommonButton extends StatefulWidget {
@@ -50,14 +51,12 @@ final class CommonButtonState extends State<CommonButton> {
           child: widget.isShowIndicator
               ? CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  strokeWidth: 3.0,
+                  strokeAlign: -2.0,
                 )
               : Text(
                   widget.title,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
+                  style: AppTextStyles.button
                 ),
         ),
       ),

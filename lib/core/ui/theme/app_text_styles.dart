@@ -2,7 +2,7 @@ import 'package:event_app/core/ui/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AppTextStyles {
-  
+
   // Заголовки
   static const TextStyle headline1 = TextStyle(
     fontSize: 28,
@@ -69,7 +69,7 @@ class AppTextStyles {
   static const TextStyle button = TextStyle(
     fontSize: 16,
     fontFamily: 'SFRounded',
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w700,
     color: Colors.white,
   );
 

@@ -26,4 +26,7 @@ class AuthError extends AuthState {
 
   @override
   List<Object> get props => [message];
+
+  @override
+  String toString() => 'AuthError: $message';
 }

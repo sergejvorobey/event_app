@@ -10,6 +10,7 @@ class AppColors {
   // Текст
   static const Color textPrimary = Color(0xFF212529);
   static const Color textSecondary = Color.fromRGBO(0, 0, 0, 0.42);
+  static const Color textWhite = Colors.white;
 
   // Статусы
   static const Color success = Color(0xFF28A745);

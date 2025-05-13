@@ -49,8 +49,8 @@ class CommonTextField extends StatefulWidget {
 final class CommonTextFieldState extends State<CommonTextField> {
   late TextEditingController _controller;
   late FocusNode _focusNode;
-  Color _currentLabelColor = Colors.grey;
-  Color _currentBackgroundColor = Colors.white;
+  Color _currentLabelColor = AppColors.textSecondary;
+  Color _currentBackgroundColor = AppColors.greyLight;
 
   @override
   void initState() {

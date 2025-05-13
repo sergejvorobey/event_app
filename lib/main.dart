@@ -13,7 +13,7 @@ void main() {
         debugShowCheckedModeBanner: false,
         initialRoute: '/auth',
         routes: {
-          '/auth': (context) => AuthScreen(),
+          '/auth': (context) => AuthScreen()
           // '/register': (context) => RegisterScreen(), // Регистрация
           // '/home': (context) => HomeScreen(), // Главный экран
         },

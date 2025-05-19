@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:event_app/core/enum/http_method.dart';
 import 'package:event_app/core/model/http_exception.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkService {
@@ -72,8 +73,14 @@ class NetworkService {
       }
 
       return _handleResponse(response);
-    } catch (e) {
-      throw HttpException(message: 'Network error: $e');
+    } catch (exception) {
+      debugPrint(exception.toString());
+
+      if (exception is HttpException) {
+        rethrow;
+      } else {
+        throw HttpException(message: exception.toString());
+      }
     }
   }
 
@@ -95,9 +102,19 @@ class NetworkService {
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return response.body.isNotEmpty ? jsonDecode(response.body) : null;
     } else {
+      String errorMessage = 'Неизвестная ошибка';
+      try {
+        final decoded = jsonDecode(response.body);
+        if (decoded is Map<String, dynamic> && decoded['message'] != null) {
+          errorMessage = decoded['message'];
+        }
+      } catch (_) {
+        // ignore
+      }
+
       throw HttpException(
         statusCode: response.statusCode,
-        message: response.body,
+        message: errorMessage,
       );
     }
   }

@@ -1,8 +1,13 @@
 class AuthResponse {
-  final String _login;
-  final String _userId;
+  final String login;
+  final String userId;
 
-  AuthResponse({required String login, required String userId})
-      : _login = login,
-        _userId = userId;
+  AuthResponse({required this.login, required this.userId});
+
+  factory AuthResponse.fromJson(Map<String, dynamic> json) {
+    return AuthResponse(
+      login: json['login'],
+      userId: json['userId']
+    );
+  }
 }

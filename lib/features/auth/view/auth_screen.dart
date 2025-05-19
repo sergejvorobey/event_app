@@ -8,55 +8,71 @@ import 'package:event_app/features/auth/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AuthScreen extends StatelessWidget {
+class AuthScreen extends StatefulWidget {
+  const AuthScreen({super.key});
 
+  @override
+  AuthScreenState createState() => AuthScreenState();
+}
+
+// MARK: - Lifecycle
+
+final class AuthScreenState extends State<AuthScreen> {
+  
   // MARK: - Property
-
-  final TextEditingController _loginController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
 
   final FocusNode _loginTextFieldFocusNode = FocusNode();
   final FocusNode _passwordTextFieldFocusNode = FocusNode();
 
   final AuthBloc _authBloc = AuthBloc();
 
-  AuthScreen({super.key});
-
-  // MARK: - Lifecycle
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('')),
-      body: Builder(
-        builder: (context) {
-          return Padding(
-            padding: const EdgeInsets.all(0.0),
-            child: BlocConsumer<AuthBloc, AuthState>(
-              bloc: _authBloc,
-              listener: (context, state) {
-                switch (state) {
-                  case AuthSuccess():
-                  Navigator.pushReplacementNamed(context, '/home');
-                  case AuthError():
-                  showTopToast(
-                    context: context,
-                    title: 'Ошибка',
-                    message: state.message,
-                    type: ToastType.error
-                  );
-                }
-              },
-              builder: (context, state) {
-                return Column(
+    return Scaffold(appBar: AppBar(title: const Text('')), body: _content());
+  }
+
+  @override
+  void dispose() {
+    _authBloc.close();
+    _loginTextFieldFocusNode.dispose();
+    _passwordTextFieldFocusNode.dispose();
+    super.dispose();
+  }
+
+  // MARK: - Privates
+
+  Widget _content() {
+    return SafeArea(
+      child: BlocConsumer<AuthBloc, AuthState>(
+        bloc: _authBloc,
+        listener: (context, state) {
+          switch (state) {
+            case AuthSuccess():
+              Navigator.pushNamed(context, '/home');
+            case AuthError():
+              showTopToast(
+                context: context,
+                title: 'Ошибка',
+                message: state.message,
+                type: ToastType.error,
+              );
+          }
+        },
+        builder: (context, state) {
+          return Column(
+            children: [
+              Expanded(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 0),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 0,
+                        vertical: 0,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        spacing: 8,
                         children: [
                           Text(
                             'Добро пожаловать',
@@ -75,9 +91,10 @@ class AuthScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: CommonTextField(
-                        label: 'Логин',
-                        placeholder: 'Введите логин',
-                        hint: 'Начните вводить логин',
+                        value: state.login?.value ?? "",
+                        label: state.login?.label ?? "",
+                        placeholder: state.login?.placeholder ?? "",
+                        hint: state.login?.message ?? "",
                         onValueChanged: _onLoginTextChanged,
                         isStartIndicator: false,
                         hintColor: Colors.grey,
@@ -89,9 +106,10 @@ class AuthScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: CommonTextField(
-                        label: 'Пароль',
-                        placeholder: 'Введите пароль',
-                        hint: 'Начните вводить пароль',
+                        value: state.password?.value ?? "",
+                        label: state.password?.label ?? "",
+                        placeholder: state.password?.placeholder ?? "",
+                        hint: state.password?.message ?? "",
                         onValueChanged: _onPasswordTextChanged,
                         isStartIndicator: false,
                         hintColor: Colors.grey,
@@ -100,35 +118,21 @@ class AuthScreen extends StatelessWidget {
                         isShowKeyboard: false,
                       ),
                     ),
-                    const SizedBox(height: 48),
-                    CommonButton(
-                      title: 'Продолжить',
-                      action: () {
-                        _authBloc.add(
-                          LoginButtonPressed(
-                            login: _loginController.text,
-                            password: _passwordController.text,
-                          ),
-                        );
-                      },
-                      isEnabled: true,
-                      isShowIndicator: false,
-                    ),
-                    const SizedBox(height: 16),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.only(
+                        left: 16,
+                        right: 16,
+                        top: 16,
+                        bottom: 16,
+                      ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        spacing: 8,
                         children: [
-                          Text(
-                            "Нет аккаунта?",
-                            style: TextStyle(fontSize: 16, color: Colors.black),
-                          ),
+                          const Spacer(),
                           CommonTextButton(
-                            title: "Зарегистрироваться",
+                            title: "Восстановить пароль",
                             onPressed: () {
-                              // TODO: - Доделать нажатие
+                              _authBloc.add(RecoverButtonPressed());
                             },
                             isEnabled: true,
                           ),
@@ -137,22 +141,35 @@ class AuthScreen extends StatelessWidget {
                     ),
                     const Spacer(),
                   ],
-                );
-              },
-            ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: CommonButton(
+                  title: 'Продолжить',
+                  isEnabled: true,
+                  action: () {
+                    _authBloc.add(
+                      LoginButtonPressed(
+                        login: state.login?.value ?? "",
+                        password: state.password?.value ?? "",
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
           );
         },
       ),
     );
   }
 
-  // MARK: - Privates
-
   void _onLoginTextChanged(String value) {
-    _loginController.text = value;
+    _authBloc.add(LoginChanged(value));
   }
 
   void _onPasswordTextChanged(String value) {
-    _passwordController.text = value;
+    _authBloc.add(PasswordChanged(value));
   }
 }

@@ -1,31 +1,58 @@
 part of 'auth_bloc.dart';
 
-abstract class AuthState extends Equatable {
-  const AuthState();
+class AuthState extends Equatable {
+  final CommonTextFieldHandle? login;
+  final CommonTextFieldHandle? password;
+
+  const AuthState({this.login, this.password});
+
+  AuthState copyWith({
+    CommonTextFieldHandle? login,
+    CommonTextFieldHandle? password,
+  }) {
+    return AuthState(
+      login: login ?? this.login,
+      password: password ?? this.password,
+    );
+  }
+
+  @override
+  List<Object?> get props => [login, password];
 }
 
 class AuthInitial extends AuthState {
-  @override
-  List<Object> get props => [];
+  AuthInitial()
+    : super(
+        login: CommonTextFieldHandle(
+          value: "",
+          label: "Логин",
+          placeholder: "Введите логин",
+          message: "Начните вводить логин",
+        ),
+        password: CommonTextFieldHandle(
+          value: "",
+          label: "Пароль",
+          placeholder: "Введите пароль",
+          message: "Начните вводить пароль",
+        ),
+      );
 }
 
 class AuthLoading extends AuthState {
-  @override
-  List<Object> get props => [];
+  const AuthLoading({super.login, super.password});
 }
 
 class AuthSuccess extends AuthState {
-  @override
-  List<Object> get props => [];
+  const AuthSuccess({super.login, super.password});
 }
 
 class AuthError extends AuthState {
   final String message;
 
-  const AuthError(this.message);
+  const AuthError(this.message, {super.login, super.password});
 
   @override
-  List<Object> get props => [message];
+  List<Object?> get props => [message, login, password];
 
   @override
   String toString() => 'AuthError: $message';

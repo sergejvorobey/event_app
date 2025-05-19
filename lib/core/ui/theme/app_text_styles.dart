@@ -18,6 +18,13 @@ class AppTextStyles {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle headline16 = TextStyle(
+    fontSize: 16,
+    fontFamily: 'SFRounded',
+    fontWeight: FontWeight.w600,
+    color: AppColors.textPrimary,
+  );
+
   // Основной текст
   static const TextStyle bodyText1 = TextStyle(
     fontSize: 16,

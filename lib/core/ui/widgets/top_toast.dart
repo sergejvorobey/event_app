@@ -8,7 +8,6 @@ void showTopToast({
   required ToastType type
 }) {
   final overlay = Overlay.of(context);
-  if (overlay == null) return;
 
   late OverlayEntry overlayEntry;
 

@@ -8,5 +8,5 @@ class HttpException implements Exception {
     });
 
   @override
-  String toString() => 'HttpException($statusCode): $message';
+  String toString() => message;
 }

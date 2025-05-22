@@ -86,4 +86,18 @@ class AppTextStyles {
     fontFamily: 'SFRounded',
     color: AppColors.textPrimary,
   );
+
+  static const TextStyle navigationText = TextStyle(
+    fontSize: 16,
+    fontFamily: 'SFRounded',
+    fontWeight: FontWeight.w600,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle navigationAction = TextStyle(
+    fontSize: 16,
+    fontFamily: 'SFRounded',
+    fontWeight: FontWeight.w400,
+    color: AppColors.primary,
+  );
 }

@@ -146,6 +146,7 @@ final class CommonTextFieldState extends State<CommonTextField> {
                             style: TextStyle(
                               fontSize: 12,
                               fontFamily: "SFRounded",
+                              fontWeight: FontWeight.w500,
                               color: _currentLabelColor,
                             ),
                           ),

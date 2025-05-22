@@ -10,7 +10,7 @@ String? validateLogin(String login) {
 }
 
 String? validatePassword(String password) {
-  if (password.isEmpty) return 'Начните вводить логин';
+  if (password.isEmpty) return 'Начните вводить пароль';
   if (password.length < 6) return 'Пароль должен содержать минимум 6 символов';
   if (password.length > 20) return 'Пароль должен содержать максимум 20 символов';
 

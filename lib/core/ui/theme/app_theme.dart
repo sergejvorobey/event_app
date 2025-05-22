@@ -23,13 +23,13 @@ final appTheme = ThemeData(
   appBarTheme: const AppBarTheme(
     backgroundColor: Colors.white,
     elevation: 0,
-    // centerTitle: true,
-    // titleTextStyle: TextStyle(
-    // fontFamily: 'SFRounded',
-    // fontSize: 22,
-    // fontWeight: FontWeight.w700,
-    // color: Colors.black,
-    // ),
+    centerTitle: true,
+    titleTextStyle: TextStyle(
+    fontFamily: 'SFRounded',
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
+    color: Colors.black,
+    ),
     iconTheme: IconThemeData(color: Colors.black),
   ),
 

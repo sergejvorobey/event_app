@@ -30,7 +30,7 @@ final class CommonButtonState extends State<CommonButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: widget.horizontalMargin),
+      margin: EdgeInsets.symmetric(horizontal: 0),
       child: GestureDetector(
         onTap: widget.isEnabled ? widget.action : null,
         onTapDown: (_) => _onPressed(),
@@ -40,24 +40,25 @@ final class CommonButtonState extends State<CommonButton> {
           duration: const Duration(milliseconds: 200),
           curve: Curves.easeOut,
           decoration: BoxDecoration(
-            color: _isPressed
-                ? AppColors.primary.withAlpha(95)
-                : AppColors.primary,
+            color:
+                widget.isEnabled
+                    ? (_isPressed
+                        ? AppColors.primary.withAlpha(95)
+                        : AppColors.primary)
+                    : AppColors.primary.withAlpha(200),
             borderRadius: BorderRadius.circular(12),
           ),
           width: double.infinity,
           height: widget.height,
           alignment: Alignment.center,
-          child: widget.isShowIndicator
-              ? CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                  strokeWidth: 3.0,
-                  strokeAlign: -2.0,
-                )
-              : Text(
-                  widget.title,
-                  style: AppTextStyles.button
-                ),
+          child:
+              widget.isShowIndicator
+                  ? CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    strokeWidth: 3.0,
+                    strokeAlign: -3.0,
+                  )
+                  : Text(widget.title, style: AppTextStyles.button),
         ),
       ),
     );

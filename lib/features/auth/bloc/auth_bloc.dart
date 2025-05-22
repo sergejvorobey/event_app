@@ -3,7 +3,7 @@ import 'package:event_app/core/network/network_service.dart';
 import 'package:event_app/core/ui/common_text_field_handle.dart';
 import 'package:event_app/core/validation/input_validators.dart';
 import 'package:event_app/features/auth/repository/auth_repository.dart';
-import 'package:flutter/rendering.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -61,8 +61,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final result = await _repository.sendAuth(event.login, event.password);
     switch (result) {
       case Success(value: final authResponse):
-        // emit(AuthSuccess());
-        print(authResponse);
+        debugPrint(authResponse.toString());
+        emit(AuthSuccess());
       case Failure(exception: final exception):
         emit(
           AuthError(
@@ -79,6 +79,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) {
     // Просто меняем состояние (навигацию обработаем в UI)
+    // TODO: - Доделать кнопку вост.пароль
     emit(AuthInitial());
   }
 }

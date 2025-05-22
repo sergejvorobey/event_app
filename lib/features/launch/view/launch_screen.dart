@@ -49,6 +49,10 @@ final class LaunchScreenState extends State<LaunchScreen> {
               Navigator.pushNamed(context, '/auth').then((_) {
                 _launchBloc.add(LaunchContent());
               });
+              case NavigateToRegistrationScreen():
+              Navigator.pushNamed(context, '/registration').then((_) {
+                _launchBloc.add(LaunchContent());
+              });
           }
         },
         builder: (BuildContext context, LaunchState state) {
@@ -132,7 +136,7 @@ final class LaunchScreenState extends State<LaunchScreen> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
           child: Column(
             spacing: 16,
             children: [

@@ -1,10 +1,14 @@
+import 'dart:ffi';
+
 import 'package:event_app/core/ui/common_button.dart';
 import 'package:event_app/core/ui/common_text_button.dart';
 import 'package:event_app/core/ui/common_text_field.dart';
+import 'package:event_app/core/ui/theme/app_colors.dart';
 import 'package:event_app/core/ui/theme/app_text_styles.dart';
 import 'package:event_app/core/ui/widgets/common_top_toast_widget.dart';
 import 'package:event_app/core/ui/widgets/top_toast.dart';
 import 'package:event_app/features/auth/bloc/auth_bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,12 +27,20 @@ final class AuthScreenState extends State<AuthScreen> {
 
   final FocusNode _loginTextFieldFocusNode = FocusNode();
   final FocusNode _passwordTextFieldFocusNode = FocusNode();
+  final bool isEnableButton = false;
 
   final AuthBloc _authBloc = AuthBloc();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: const Text('')), body: _content());
+    return Scaffold(
+      appBar: CupertinoNavigationBar(
+        previousPageTitle: "Назад",
+        middle: const Text('Вход'),
+        backgroundColor: AppColors.background,
+        ),
+      body: _content(),
+    );
   }
 
   @override
@@ -48,7 +60,7 @@ final class AuthScreenState extends State<AuthScreen> {
         listener: (context, state) {
           switch (state) {
             case AuthSuccess():
-              Navigator.pushNamed(context, '/home');
+              Navigator.pushNamed(context, '/main');
             case AuthError():
               showTopToast(
                 context: context,
@@ -67,10 +79,7 @@ final class AuthScreenState extends State<AuthScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 0,
-                        vertical: 0,
-                      ),
+                      padding: const EdgeInsets.only(top: 32),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -79,10 +88,13 @@ final class AuthScreenState extends State<AuthScreen> {
                             style: AppTextStyles.headline2,
                             textAlign: TextAlign.center,
                           ),
-                          Text(
-                            'Введите логин или пароль что бы войти',
-                            style: AppTextStyles.textSecondary16,
-                            textAlign: TextAlign.center,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Text(
+                              'Введите логин и пароль что бы войти',
+                              style: AppTextStyles.textSecondary16,
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ],
                       ),
@@ -118,44 +130,39 @@ final class AuthScreenState extends State<AuthScreen> {
                         isShowKeyboard: false,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 16,
-                        right: 16,
-                        top: 16,
-                        bottom: 16,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Spacer(),
-                          CommonTextButton(
-                            title: "Восстановить пароль",
-                            onPressed: () {
-                              _authBloc.add(RecoverButtonPressed());
-                            },
-                            isEnabled: true,
-                          ),
-                        ],
-                      ),
-                    ),
                     const Spacer(),
                   ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: CommonButton(
-                  title: 'Продолжить',
-                  isEnabled: true,
-                  action: () {
-                    _authBloc.add(
-                      LoginButtonPressed(
-                        login: state.login?.value ?? "",
-                        password: state.password?.value ?? "",
-                      ),
-                    );
-                  },
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16,
+                  horizontal: 16,
+                ),
+                child: Column(
+                  spacing: 16,
+                  children: [
+                    CommonButton(
+                      title: 'Войти',
+                      action: () {
+                        _authBloc.add(
+                          LoginButtonPressed(
+                            login: state.login?.value ?? "",
+                            password: state.password?.value ?? "",
+                          ),
+                        );
+                      },
+                      isEnabled: state.isButtonEnabled,
+                      isShowIndicator: state is AuthLoading,
+                    ),
+                    CommonTextButton(
+                      title: "Восстановить пароль",
+                      onPressed: () {
+                        _authBloc.add(RecoverButtonPressed());
+                      },
+                      isEnabled: true,
+                    ),
+                  ],
                 ),
               ),
             ],

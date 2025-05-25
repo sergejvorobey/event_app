@@ -3,6 +3,7 @@ import 'package:event_app/core/ui/theme/app_text_styles.dart';
 import 'package:event_app/core/ui/theme/app_theme.dart';
 import 'package:event_app/features/auth/bloc/auth_bloc.dart';
 import 'package:event_app/features/auth/view/auth_screen.dart';
+import 'package:event_app/features/home/view/home_screen.dart';
 import 'package:event_app/features/registration/view/registration_screen.dart';
 import 'package:event_app/routers/routers.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,7 +27,12 @@ void main() {
                 builder: (context) => const RegistrationScreen(),
                 settings: settings,
               );
-              // case '/main':
+              case '/home':
+              return CupertinoPageRoute(
+                builder: (context) => const HomeScreen(),
+                settings: settings,
+                fullscreenDialog: true
+              );
           }
           return null;
         },

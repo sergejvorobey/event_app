@@ -1,5 +1,6 @@
 import 'package:event_app/core/model/result.dart';
 import 'package:event_app/core/network/network_service.dart';
+import 'package:event_app/core/storage/storage_service.dart';
 import 'package:event_app/core/ui/common_text_field_handle.dart';
 import 'package:event_app/core/validation/input_validators.dart';
 import 'package:event_app/features/auth/repository/auth_repository.dart';
@@ -24,6 +25,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   final AuthRepository _repository = AuthRepository(
     networkService: NetworkService(),
+    storageService: StorageService()
   );
 
   void _onLoginChanged(LoginChanged event, Emitter<AuthState> emit) {
@@ -46,7 +48,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           value: event.password,
           label: "Пароль",
           placeholder: "Введите пароль",
-          message: validatePassword(event.password),
+          message: validatePassword(event.password, ""),
         ),
       ),
     );
@@ -78,7 +80,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     RecoverButtonPressed event,
     Emitter<AuthState> emit,
   ) {
-    // Просто меняем состояние (навигацию обработаем в UI)
     // TODO: - Доделать кнопку вост.пароль
     emit(AuthInitial());
   }

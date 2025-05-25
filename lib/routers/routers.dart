@@ -1,4 +1,5 @@
 import 'package:event_app/features/auth/view/auth_screen.dart';
+import 'package:event_app/features/home/view/home_screen.dart';
 import 'package:event_app/features/launch/view/launch_screen.dart';
 import 'package:event_app/features/registration/view/registration_screen.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,7 @@ class Routers {
       '/launch': (context) => LaunchScreen(),
       '/auth': (context) => AuthScreen(),
       '/registration': (context) => RegistrationScreen(),
-      // '/main': (context) => MainScreen(),
+      // '/home': (context) => HomeScreen(),
     };
   }
 }

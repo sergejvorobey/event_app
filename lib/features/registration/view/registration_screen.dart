@@ -1,7 +1,8 @@
 import 'package:event_app/core/ui/common_button.dart';
 import 'package:event_app/core/ui/common_text_field.dart';
 import 'package:event_app/core/ui/theme/app_colors.dart';
-import 'package:event_app/core/ui/theme/app_text_styles.dart';
+import 'package:event_app/core/ui/widgets/common_top_toast_widget.dart';
+import 'package:event_app/core/ui/widgets/top_toast.dart';
 import 'package:event_app/features/registration/bloc/registration_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       appBar: CupertinoNavigationBar(
         previousPageTitle: "Назад",
         middle: const Text('Регистрация'),
+        border: null,
         backgroundColor: AppColors.background,
         ),
       body: _content(),
@@ -37,7 +39,26 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     return SafeArea(
       child: BlocConsumer<RegistrationBloc, RegistrationState>(
         bloc: _regBloc,
-        listener: (context, state) {},
+        listener: (context, state) {
+          switch (state) {
+            case RegistrationSuccess(:final userId):
+              _regBloc.add(FetchToken(userId: userId));
+              break;
+
+            case TokenSuccess():
+              Navigator.pushNamed(context, '/home');
+              break;
+
+            case RegistrationError(:final message) || TokenError(:final message):
+              showTopToast(
+                context: context,
+                title: 'Ошибка',
+                message: message,
+                type: ToastType.error,
+              );
+              break;
+          }
+        },
         builder: (context, state) {
           return Column(
             children: [
@@ -52,40 +73,34 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       child: Column(
                         children: [
                           CommonTextField(
-                            value: "",
-                            label: "Логин",
-                            placeholder: "Введите логин",
-                            hint: "Начните вводить логин",
+                            value: state.login?.value ?? "",
+                            label: state.login?.label ?? "",
+                            placeholder: state.login?.placeholder ?? "",
+                            hint: state.login?.message ?? "",
                             onValueChanged: _onLoginTextChanged,
-                            isStartIndicator: false,
                             hintColor: Colors.grey,
-                            isSecure: false,
                             focusNode: _loginTextFieldFocusNode,
                             isShowKeyboard: true,
                           ),
                           CommonTextField(
-                              value: "",
-                              label: "Пароль",
-                              placeholder: "Введите пароль",
-                              hint: "Начните вводить пароль",
+                              value: state.password?.value ?? "",
+                              label: state.password?.label ?? "",
+                              placeholder: state.password?.placeholder ?? "",
+                              hint: state.password?.message ?? "",
                               onValueChanged: _onPasswordTextChanged,
-                              isStartIndicator: false,
                               hintColor: Colors.grey,
                               isSecure: true,
-                              focusNode: _passwordTextFieldFocusNode,
-                              isShowKeyboard: false,
+                              focusNode: _passwordTextFieldFocusNode
                             ),
                             CommonTextField(
-                              value: "",
-                              label: "Повторите пароль",
-                              placeholder: "Введите пароль",
-                              hint: "Начните вводить пароль",
+                              value: state.confirmPassword?.value ?? "",
+                              label: state.confirmPassword?.label ?? "",
+                              placeholder: state.confirmPassword?.placeholder ?? "",
+                              hint: state.confirmPassword?.message ?? "",
                               onValueChanged: _onConfirmPasswordTextChanged,
-                              isStartIndicator: false,
                               hintColor: Colors.grey,
                               isSecure: true,
                               focusNode: _confirmPasswordTextFieldFocusNode,
-                              isShowKeyboard: false,
                             ),
                           ],
                         ),
@@ -98,8 +113,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       ),
                       child: CommonButton(
                         title: 'Продолжить',
-                        isEnabled: true,
-                        action: () {},
+                        action: () {
+                          _regBloc.add(
+                            RegistrationButtonPressed(
+                              login: state.login?.value ?? "",
+                              password: state.password?.value ?? "",
+                            )
+                          );
+                        },
+                        isEnabled: state.isButtonEnabled,
+                        isShowIndicator: state is RegistrationLoading,
                       ),
                     ),
                   ],
@@ -113,14 +136,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   void _onLoginTextChanged(String value) {
-    // _authBloc.add(LoginChanged(value));
+    _regBloc.add(LoginChanged(value));
   }
 
   void _onPasswordTextChanged(String value) {
-    // _authBloc.add(LoginChanged(value));
+    _regBloc.add(PasswordChanged(value));
   }
 
   void _onConfirmPasswordTextChanged(String value) {
-    // _authBloc.add(LoginChanged(value));
+    _regBloc.add(ConfirmPasswordChanged(value));
   }
 }

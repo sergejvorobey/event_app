@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:event_app/core/ui/common_button.dart';
 import 'package:event_app/core/ui/common_text_button.dart';
 import 'package:event_app/core/ui/common_text_field.dart';
@@ -37,6 +35,7 @@ final class AuthScreenState extends State<AuthScreen> {
       appBar: CupertinoNavigationBar(
         previousPageTitle: "Назад",
         middle: const Text('Вход'),
+        border: null,
         backgroundColor: AppColors.background,
         ),
       body: _content(),
@@ -60,7 +59,7 @@ final class AuthScreenState extends State<AuthScreen> {
         listener: (context, state) {
           switch (state) {
             case AuthSuccess():
-              Navigator.pushNamed(context, '/main');
+              Navigator.pushNamed(context, '/home');
             case AuthError():
               showTopToast(
                 context: context,
@@ -78,28 +77,29 @@ final class AuthScreenState extends State<AuthScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 32),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Добро пожаловать',
-                            style: AppTextStyles.headline2,
-                            textAlign: TextAlign.center,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: Text(
-                              'Введите логин и пароль что бы войти',
-                              style: AppTextStyles.textSecondary16,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Spacer(),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(top: 32),
+                    //   child: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.center,
+                    //     children: [
+                    //       Text(
+                    //         'Добро пожаловать',
+                    //         style: AppTextStyles.headline2,
+                    //         textAlign: TextAlign.center,
+                    //       ),
+                    //       Padding(
+                    //         padding: const EdgeInsets.symmetric(horizontal: 16),
+                    //         child: Text(
+                    //           'Введите логин и пароль что бы войти',
+                    //           style: AppTextStyles.textSecondary16,
+                    //           textAlign: TextAlign.center,
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    // const Spacer(),
+                    const SizedBox(height: 16),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: CommonTextField(

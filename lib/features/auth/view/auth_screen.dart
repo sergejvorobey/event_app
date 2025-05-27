@@ -2,7 +2,6 @@ import 'package:event_app/core/ui/common_button.dart';
 import 'package:event_app/core/ui/common_text_button.dart';
 import 'package:event_app/core/ui/common_text_field.dart';
 import 'package:event_app/core/ui/theme/app_colors.dart';
-import 'package:event_app/core/ui/theme/app_text_styles.dart';
 import 'package:event_app/core/ui/widgets/common_top_toast_widget.dart';
 import 'package:event_app/core/ui/widgets/top_toast.dart';
 import 'package:event_app/features/auth/bloc/auth_bloc.dart';
@@ -58,15 +57,22 @@ final class AuthScreenState extends State<AuthScreen> {
         bloc: _authBloc,
         listener: (context, state) {
           switch (state) {
-            case AuthSuccess():
+            case AuthSuccess(:final userId):
+              _authBloc.add(FetchToken(userId: userId));
+              break;
+
+            case TokenSuccess():
               Navigator.pushNamed(context, '/home');
-            case AuthError():
+              break;
+
+            case AuthError(:final message) || TokenError(:final message):
               showTopToast(
                 context: context,
                 title: 'Ошибка',
-                message: state.message,
+                message: message,
                 type: ToastType.error,
               );
+              break;
           }
         },
         builder: (context, state) {

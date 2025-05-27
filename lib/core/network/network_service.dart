@@ -1,15 +1,19 @@
 import 'dart:convert';
-
 import 'package:event_app/core/enum/http_method.dart';
 import 'package:event_app/core/model/http_exception.dart';
-import 'package:flutter/widgets.dart';
+import 'package:event_app/core/storage/storage_service.dart';
+import 'package:event_app/features/registration/repository/model/token_response.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:talker_flutter/talker_flutter.dart';
 
 class NetworkService {
   final String _baseUrl = 'http://194.87.236.187:8080/';
   final http.Client _client;
 
   NetworkService({http.Client? client}) : _client = client ?? http.Client();
+
+  final StorageService _storageService = StorageService();
 
   Future<dynamic> request({
     required String path,
@@ -23,64 +27,47 @@ class NetworkService {
         '$_baseUrl$path',
       ).replace(queryParameters: queryParameters);
 
-      final requestHeaders = {'Content-Type': 'application/json', ...?headers};
+      final accessToken = await _storageService.getAccessToken();
+      final requestHeaders = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+        ...?headers,
+      };
 
-      http.Response response;
+      http.Response response = await _sendHttpRequest(
+        uri,
+        method,
+        requestHeaders,
+        body,
+      );
 
-      switch (method) {
-        case HttpMethod.post:
-          response = await _client.post(
-            uri,
-            headers: requestHeaders,
-            body: body != null ? jsonEncode(body) : null,
-          );
-          break;
-        case HttpMethod.put:
-          response = await _client.put(
-            uri,
-            headers: requestHeaders,
-            body: body != null ? jsonEncode(body) : null,
-          );
-          break;
-        case HttpMethod.patch:
-          response = await _client.patch(
-            uri,
-            headers: requestHeaders,
-            body: body != null ? jsonEncode(body) : null,
-          );
-          break;
-        case HttpMethod.delete:
-          response = await _client.delete(
-            uri,
-            headers: requestHeaders,
-            body: body != null ? jsonEncode(body) : null,
-          );
-          break;
-        case HttpMethod.head:
-          response = await _client.head(uri, headers: requestHeaders);
-          break;
-        case HttpMethod.get:
-          if (body != null) {
-            response = await _sendGetWithBody(
-              uri,
-              headers: requestHeaders,
-              body: body,
-            );
-          } else {
-            response = await _client.get(uri, headers: requestHeaders);
-          }
-          break;
-      }
-
+      // return _handleResponse(response);
+      try {
       return _handleResponse(response);
-    } catch (exception) {
-      debugPrint(exception.toString());
+    } on HttpException catch (e) {
+      // Если 401 — пробуем обновить токен и повторить запрос
+      if (e.statusCode == 401) {
+          await refreshToken();
 
-      if (exception is HttpException) {
-        rethrow;
-      } else {
-        throw HttpException(message: exception.toString());
+          final newToken = await _storageService.getAccessToken();
+          // Обновляем заголовки
+          requestHeaders['Authorization'] = 'Bearer $newToken';
+
+          final retryResponse = await _sendHttpRequest(
+            uri,
+            method,
+            requestHeaders,
+            body,
+          );
+
+          return _handleResponse(retryResponse);
+        } else {
+          rethrow;
+        }
       }
+    } catch (exception, st) {
+      GetIt.I<Talker>().handle(exception, st);
+      throw HttpException(message: exception.toString());
     }
   }
 
@@ -98,8 +85,35 @@ class NetworkService {
     return await http.Response.fromStream(streamedResponse);
   }
 
+  Future<http.Response> _sendHttpRequest(
+  Uri uri,
+  HttpMethod method,
+  Map<String, String> headers,
+  Map<String, dynamic>? body,
+) async {
+  switch (method) {
+    case HttpMethod.post:
+      return _client.post(uri, headers: headers, body: body != null ? jsonEncode(body) : null);
+    case HttpMethod.put:
+      return _client.put(uri, headers: headers, body: body != null ? jsonEncode(body) : null);
+    case HttpMethod.patch:
+      return _client.patch(uri, headers: headers, body: body != null ? jsonEncode(body) : null);
+    case HttpMethod.delete:
+      return _client.delete(uri, headers: headers, body: body != null ? jsonEncode(body) : null);
+    case HttpMethod.head:
+      return _client.head(uri, headers: headers);
+    case HttpMethod.get:
+      if (body != null) {
+        return _sendGetWithBody(uri, headers: headers, body: body);
+      } else {
+        return _client.get(uri, headers: headers);
+      }
+  }
+}
+
   dynamic _handleResponse(http.Response response) {
     if (response.statusCode >= 200 && response.statusCode < 300) {
+      GetIt.I<Talker>().log(jsonDecode(response.body));
       return response.body.isNotEmpty ? jsonDecode(response.body) : null;
     } else {
       String errorMessage = 'Неизвестная ошибка';
@@ -107,6 +121,7 @@ class NetworkService {
         final decoded = jsonDecode(response.body);
         if (decoded is Map<String, dynamic> && decoded['message'] != null) {
           errorMessage = decoded['message'];
+          GetIt.I<Talker>().handle(response.statusCode, null, errorMessage);
         }
       } catch (_) {
         // ignore
@@ -116,6 +131,25 @@ class NetworkService {
         statusCode: response.statusCode,
         message: errorMessage,
       );
+    }
+  }
+
+  Future refreshToken() async {
+    try {
+      final response = await request(
+        path: "token/refresh",
+        method: HttpMethod.post,
+      );
+
+      final tokenResponse = TokenResponse.fromJson(
+        response as Map<String, dynamic>,
+      );
+      await _storageService.saveTokens(
+        accessToken: tokenResponse.accessToken,
+        refreshToken: tokenResponse.refreshToken,
+      );
+    } catch (e, st) {
+      GetIt.I<Talker>().handle(e, st);
     }
   }
 

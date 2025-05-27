@@ -34,3 +34,12 @@ class RecoverButtonPressed extends AuthEvent {
   @override
   List<Object> get props => [];
 }
+
+class FetchToken extends AuthEvent {
+  final String userId;
+
+  const FetchToken({required this.userId});
+
+  @override
+  List<Object?> get props => [userId];
+}

@@ -54,7 +54,9 @@ class AuthLoading extends AuthState {
 }
 
 class AuthSuccess extends AuthState {
-  const AuthSuccess({super.login, super.password})
+  final String userId;
+
+  const AuthSuccess({required this.userId, super.login, super.password})
     : super(isButtonEnabled: false);
 }
 
@@ -69,4 +71,32 @@ class AuthError extends AuthState {
 
   @override
   String toString() => 'AuthError: $message';
+}
+
+class TokenSuccess extends AuthState {
+  const TokenSuccess({
+    super.login,
+    super.password,
+  }) : super(isButtonEnabled: false);
+}
+
+class TokenError extends AuthState {
+  final String message;
+
+  const TokenError(
+    this.message, {
+    super.login,
+    super.password,
+  }) : super(isButtonEnabled: false);
+
+  @override
+  List<Object?> get props => [
+    message,
+    login,
+    password,
+    isButtonEnabled,
+  ];
+
+  @override
+  String toString() => 'TokenError: $message';
 }

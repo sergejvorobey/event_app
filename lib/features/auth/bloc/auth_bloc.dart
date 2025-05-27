@@ -21,6 +21,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
     on<LoginButtonPressed>(_onLoginButtonPressed);
     on<RecoverButtonPressed>(_navigateToRecoverPasswordScreen);
+    on<FetchToken>(_onFetchToken);
   }
 
   final AuthRepository _repository = AuthRepository(
@@ -63,8 +64,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final result = await _repository.sendAuth(event.login, event.password);
     switch (result) {
       case Success(value: final authResponse):
-        debugPrint(authResponse.toString());
-        emit(AuthSuccess());
+        emit(
+          AuthSuccess(
+            userId: authResponse.userId,
+            login: state.login,
+            password: state.password,
+          ),
+        );
       case Failure(exception: final exception):
         emit(
           AuthError(
@@ -82,5 +88,35 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) {
     // TODO: - Доделать кнопку вост.пароль
     emit(AuthInitial());
+  }
+
+  void _onFetchToken(FetchToken event, Emitter<AuthState> emit) async {
+    emit(
+      AuthLoading(
+        login: state.login,
+        password: state.password
+      ),
+    );
+
+    final result = await _repository.fetchToken(
+      state.login?.value ?? "",
+      event.userId,
+    );
+    switch (result) {
+      case Success(value: final tokenResponse):
+        _repository.saveTokens(
+          tokenResponse.accessToken,
+          tokenResponse.refreshToken,
+        );
+        emit(TokenSuccess());
+      case Failure(exception: final exception):
+        emit(
+          TokenError(
+            exception.toString(),
+            login: state.login,
+            password: state.password
+          ),
+        );
+    }
   }
 }

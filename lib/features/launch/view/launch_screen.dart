@@ -45,22 +45,42 @@ final class LaunchScreenState extends State<LaunchScreen> {
         bloc: _launchBloc,
         listener: (context, state) {
           switch (state) {
+            case NavigateToHomeScreen():
+              Navigator.pushNamed(context, '/home');
+              break;
+
             case NavigateToLoginScreen():
               Navigator.pushNamed(context, '/auth').then((_) {
                 _launchBloc.add(LaunchContent());
               });
-              case NavigateToRegistrationScreen():
+              break;
+
+            case NavigateToRegistrationScreen():
               Navigator.pushNamed(context, '/registration').then((_) {
                 _launchBloc.add(LaunchContent());
               });
+              break;
           }
         },
         builder: (BuildContext context, LaunchState state) {
           if (state is LaunchInitial) {
             return buildOnboarding(state);
           }
+          if (state is LaunchLoading) {
+            return _buildLoadingIndicator();
+          }
           return const Spacer();
         },
+      ),
+    );
+  }
+
+  Widget _buildLoadingIndicator() {
+    return Center(
+      child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+        strokeWidth: 3.0,
+        strokeAlign: -3.0,
       ),
     );
   }

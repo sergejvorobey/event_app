@@ -24,6 +24,12 @@ class LaunchInitial extends LaunchState {
   List<Object> get props => [pages];
 }
 
+class LaunchLoading extends LaunchState {
+  const LaunchLoading();
+}
+
 class NavigateToLoginScreen extends LaunchState {}
 
 class NavigateToRegistrationScreen extends LaunchState {}
+
+class NavigateToHomeScreen extends LaunchState {}

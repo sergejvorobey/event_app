@@ -9,12 +9,20 @@ import 'package:event_app/routers/routers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 void main() {
+
+  final talker = Talker();
+  GetIt.I.registerSingleton(talker);
+  GetIt.I<Talker>();
+
   runApp(
     BlocProvider(
       create: (context) => AuthBloc(),
       child: MaterialApp(
+        navigatorObservers: [TalkerRouteObserver(GetIt.I<Talker>())],
         onGenerateRoute: (settings) {
           switch (settings.name) {
             case '/auth':

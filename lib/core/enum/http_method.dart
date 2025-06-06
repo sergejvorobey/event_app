@@ -1,11 +1,4 @@
-enum HttpMethod {
-  get,
-  post,
-  put,
-  patch,
-  delete,
-  head,
-}
+enum HttpMethod { get, post, put, patch, delete, head }
 
 extension HttpMethodExtension on HttpMethod {
   String get name {

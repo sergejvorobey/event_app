@@ -5,19 +5,20 @@ void showTopToast({
   required BuildContext context,
   required String title,
   required String message,
-  required ToastType type
+  required ToastType type,
 }) {
   final overlay = Overlay.of(context);
 
   late OverlayEntry overlayEntry;
 
   overlayEntry = OverlayEntry(
-    builder: (context) => CommonTopToastWidget(
-      title: title,
-      message: message,
-      type: type,
-      onDismissed: () => overlayEntry.remove(),
-    ),
+    builder:
+        (context) => CommonTopToastWidget(
+          title: title,
+          message: message,
+          type: type,
+          onDismissed: () => overlayEntry.remove(),
+        ),
   );
 
   overlay.insert(overlayEntry);

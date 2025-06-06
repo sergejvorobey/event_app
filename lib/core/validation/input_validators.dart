@@ -12,7 +12,9 @@ String? validateLogin(String login) {
 String? validatePassword(String password, String confirmPassword) {
   if (password.isEmpty) return 'Начните вводить пароль';
   if (password.length < 6) return 'Пароль должен содержать минимум 6 символов';
-  if (password.length > 20) return 'Пароль должен содержать максимум 20 символов';
+  if (password.length > 20) {
+    return 'Пароль должен содержать максимум 20 символов';
+  }
 
   final regex = RegExp(r'^[a-zA-Z0-9]+$');
   if (!regex.hasMatch(password)) return 'Недопустимый формат пароля';
@@ -26,8 +28,12 @@ String? validatePassword(String password, String confirmPassword) {
 
 String? validateConfirmPassword(String password, String confirmPassword) {
   if (confirmPassword.isEmpty) return 'Начните вводить пароль';
-  if (confirmPassword.length < 6) return 'Пароль должен содержать минимум 6 символов';
-  if (confirmPassword.length > 20) return 'Пароль должен содержать максимум 20 символов';
+  if (confirmPassword.length < 6) {
+    return 'Пароль должен содержать минимум 6 символов';
+  }
+  if (confirmPassword.length > 20) {
+    return 'Пароль должен содержать максимум 20 символов';
+  }
 
   final regex = RegExp(r'^[a-zA-Z0-9]+$');
   if (!regex.hasMatch(confirmPassword)) return 'Недопустимый формат пароля';

@@ -2,7 +2,6 @@ import 'package:event_app/core/ui/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AppTextStyles {
-
   // Заголовки
   static const TextStyle headline1 = TextStyle(
     fontSize: 28,
@@ -23,6 +22,13 @@ class AppTextStyles {
     fontFamily: 'SFRounded',
     fontWeight: FontWeight.w600,
     color: AppColors.textPrimary,
+  );
+
+  static const TextStyle headline16White = TextStyle(
+    fontSize: 16,
+    fontFamily: 'SFRounded',
+    fontWeight: FontWeight.w600,
+    color: AppColors.textWhite,
   );
 
   // Основной текст
@@ -58,6 +64,18 @@ class AppTextStyles {
     fontSize: 12,
     fontFamily: 'SFRounded',
     color: AppColors.textSecondary,
+  );
+
+  static const TextStyle textSecondary14White = TextStyle(
+    fontSize: 14,
+    fontFamily: 'SFRounded',
+    color: AppColors.textWhite,
+  );
+
+  static const TextStyle textSecondary16Grey = TextStyle(
+    fontSize: 16,
+    fontFamily: 'SFRounded',
+    color: AppColors.textWhite,
   );
 
   static const TextStyle textSecondary14 = TextStyle(

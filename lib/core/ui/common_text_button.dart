@@ -30,13 +30,12 @@ final class _CommonTextButtonState extends State<CommonTextButton> {
       onTapCancel: _onReleased,
       child: AnimatedOpacity(
         duration: const Duration(milliseconds: 100),
-        opacity: widget.isEnabled
-            ? (_isPressed ? 0.6 : 1.0)
-            : 0.5,
+        opacity: widget.isEnabled ? (_isPressed ? 0.6 : 1.0) : 0.5,
         child: Text(
           widget.title,
           style: AppTextStyles.button.copyWith(
-            color: widget.isEnabled ? AppColors.primary : AppColors.textSecondary,
+            color:
+                widget.isEnabled ? AppColors.primary : AppColors.textSecondary,
           ),
         ),
       ),

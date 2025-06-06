@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:event_app/core/enum/http_method.dart';
 import 'package:event_app/core/model/http_exception.dart';
 import 'package:event_app/core/storage/storage_service.dart';
-import 'package:event_app/features/registration/repository/model/token_response.dart';
+import 'package:event_app/features/registration/V1/repository/model/token_response.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:talker_flutter/talker_flutter.dart';
@@ -41,12 +41,11 @@ class NetworkService {
         body,
       );
 
-      // return _handleResponse(response);
       try {
-      return _handleResponse(response);
-    } on HttpException catch (e) {
-      // Если 401 — пробуем обновить токен и повторить запрос
-      if (e.statusCode == 401) {
+        return _handleResponse(response);
+      } on HttpException catch (e) {
+        // Если 401 — пробуем обновить токен и повторить запрос
+        if (e.statusCode == 401) {
           await refreshToken();
 
           final newToken = await _storageService.getAccessToken();
@@ -60,7 +59,7 @@ class NetworkService {
             body,
           );
 
-          return _handleResponse(retryResponse);
+          return await _handleResponse(retryResponse);
         } else {
           rethrow;
         }
@@ -86,30 +85,46 @@ class NetworkService {
   }
 
   Future<http.Response> _sendHttpRequest(
-  Uri uri,
-  HttpMethod method,
-  Map<String, String> headers,
-  Map<String, dynamic>? body,
-) async {
-  switch (method) {
-    case HttpMethod.post:
-      return _client.post(uri, headers: headers, body: body != null ? jsonEncode(body) : null);
-    case HttpMethod.put:
-      return _client.put(uri, headers: headers, body: body != null ? jsonEncode(body) : null);
-    case HttpMethod.patch:
-      return _client.patch(uri, headers: headers, body: body != null ? jsonEncode(body) : null);
-    case HttpMethod.delete:
-      return _client.delete(uri, headers: headers, body: body != null ? jsonEncode(body) : null);
-    case HttpMethod.head:
-      return _client.head(uri, headers: headers);
-    case HttpMethod.get:
-      if (body != null) {
-        return _sendGetWithBody(uri, headers: headers, body: body);
-      } else {
-        return _client.get(uri, headers: headers);
-      }
+    Uri uri,
+    HttpMethod method,
+    Map<String, String> headers,
+    Map<String, dynamic>? body,
+  ) async {
+    switch (method) {
+      case HttpMethod.post:
+        return _client.post(
+          uri,
+          headers: headers,
+          body: body != null ? jsonEncode(body) : null,
+        );
+      case HttpMethod.put:
+        return _client.put(
+          uri,
+          headers: headers,
+          body: body != null ? jsonEncode(body) : null,
+        );
+      case HttpMethod.patch:
+        return _client.patch(
+          uri,
+          headers: headers,
+          body: body != null ? jsonEncode(body) : null,
+        );
+      case HttpMethod.delete:
+        return _client.delete(
+          uri,
+          headers: headers,
+          body: body != null ? jsonEncode(body) : null,
+        );
+      case HttpMethod.head:
+        return _client.head(uri, headers: headers);
+      case HttpMethod.get:
+        if (body != null) {
+          return _sendGetWithBody(uri, headers: headers, body: body);
+        } else {
+          return _client.get(uri, headers: headers);
+        }
+    }
   }
-}
 
   dynamic _handleResponse(http.Response response) {
     if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -139,8 +154,8 @@ class NetworkService {
       final response = await request(
         path: "token/refresh",
         method: HttpMethod.post,
+        body: {"refreshToken": await _storageService.getRefreshToken()},
       );
-
       final tokenResponse = TokenResponse.fromJson(
         response as Map<String, dynamic>,
       );
@@ -149,7 +164,7 @@ class NetworkService {
         refreshToken: tokenResponse.refreshToken,
       );
     } catch (e, st) {
-      GetIt.I<Talker>().handle(e, st);
+      GetIt.I<Talker>().handle(e, st, 'REFRESH TOKEN ERROR');
     }
   }
 

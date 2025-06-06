@@ -77,7 +77,8 @@ final class CommonTextFieldState extends State<CommonTextField> {
     );
 
     setState(() {
-      _currentLabelColor = _focusNode.hasFocus ? primaryColor : AppColors.textSecondary;
+      _currentLabelColor =
+          _focusNode.hasFocus ? primaryColor : AppColors.textSecondary;
       _currentBackgroundColor =
           _focusNode.hasFocus ? backgroundColor : AppColors.greyLight;
     });
@@ -166,7 +167,7 @@ final class CommonTextFieldState extends State<CommonTextField> {
                                   _controller.text.isEmpty
                                       ? widget.placeholder
                                       : null,
-                              hintStyle: AppTextStyles.textSecondary16
+                              hintStyle: AppTextStyles.textSecondary16,
                             ),
                             textAlign: _getTextAlign(),
                             onChanged: _handleTextChanged,
@@ -198,10 +199,7 @@ final class CommonTextFieldState extends State<CommonTextField> {
           const SizedBox(height: 4),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              widget.hint!,
-              style: AppTextStyles.textSecondary12
-            ),
+            child: Text(widget.hint!, style: AppTextStyles.textSecondary12),
           ),
         ],
       ],

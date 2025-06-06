@@ -1,6 +1,6 @@
-import 'package:event_app/core/ui/theme/app_colors.dart';
+import 'package:event_app/features/profile/view/profile_screen.dart';
+import 'package:event_app/routers/routers.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,38 +10,59 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   @override
   Widget build(BuildContext context) {
-    // return PopScope(
-    //   canPop: false,
-    //   child: _content()
-    // );
-    return Scaffold(
-      appBar: CupertinoNavigationBar(
-        middle: const Text('Главный экран'),
-        leading: SizedBox(),
-        border: null,
-        backgroundColor: AppColors.background,
-      ),
-      body: _content(),
-    );
+    return _content();
   }
 
   Widget _content() {
-    return SafeArea(
-      child: Column(
-        children: [
-          // const CupertinoNavigationBar(
-          //   middle: Text('Главный экран'),
-          //   leading: SizedBox(),
-          //   backgroundColor: AppColors.background,
-          //   border: null,
-          // ),
-          const Expanded(child: Center(child: Text('Добро пожаловать!'))),
-          
+    return CupertinoTabScaffold(
+      tabBar: CupertinoTabBar(
+        iconSize: 24,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.house_fill),
+            label: 'Главный',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.list_bullet_below_rectangle),
+            label: 'Заказы',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.person_fill),
+            label: 'Профиль',
+          ),
         ],
       ),
+      tabBuilder: (context, index) {
+        switch (index) {
+          case 0:
+            return CupertinoTabView(
+              builder: (context) {
+                return CupertinoPageScaffold(
+                  child: Center(child: Text('Главный')),
+                );
+              },
+            );
+          case 1:
+            return CupertinoTabView(
+              builder: (context) {
+                return CupertinoPageScaffold(
+                  child: Center(child: Text('Заказы')),
+                );
+              },
+            );
+          case 2:
+            return CupertinoTabView(
+              onGenerateRoute: Routers.generateRoute,
+              builder: (context) {
+                return CupertinoPageScaffold(child: ProfileScreen());
+              },
+            );
+          default:
+            return Spacer();
+        }
+      },
     );
   }
 }

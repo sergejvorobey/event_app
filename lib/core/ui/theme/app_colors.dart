@@ -4,7 +4,8 @@ class AppColors {
   // Основные цвета
   static const Color primary = Color(0xFF6C63FF); // Фиолетовый (акцент)
   static const Color secondary = Color(0xFF4A44B7); // Темно-фиолетовый
-  static const Color background = Colors.white; // Светлый фон
+  static const Color background = Colors.white;
+  static const Color backgroundSecondary = Colors.black; // Светлый фон
   static const Color surface = Color(0xFFFFFFFF); // Карточки, панели
 
   // Текст

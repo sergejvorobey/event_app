@@ -1,7 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:event_app/features/profile/view/profile_screen.dart';
-import 'package:event_app/routers/routers.dart';
 import 'package:flutter/cupertino.dart';
 
+@RoutePage()
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -54,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           case 2:
             return CupertinoTabView(
-              onGenerateRoute: Routers.generateRoute,
+              // onGenerateRoute: Routers.generateRoute,
               builder: (context) {
                 return CupertinoPageScaffold(child: ProfileScreen());
               },

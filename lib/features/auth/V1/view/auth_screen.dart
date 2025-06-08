@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:event_app/core/ui/common_button.dart';
 import 'package:event_app/core/ui/common_text_button.dart';
 import 'package:event_app/core/ui/common_text_field.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+@RoutePage()
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
 
@@ -82,28 +84,6 @@ final class AuthScreenState extends State<AuthScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // Padding(
-                    //   padding: const EdgeInsets.only(top: 32),
-                    //   child: Column(
-                    //     crossAxisAlignment: CrossAxisAlignment.center,
-                    //     children: [
-                    //       Text(
-                    //         'Добро пожаловать',
-                    //         style: AppTextStyles.headline2,
-                    //         textAlign: TextAlign.center,
-                    //       ),
-                    //       Padding(
-                    //         padding: const EdgeInsets.symmetric(horizontal: 16),
-                    //         child: Text(
-                    //           'Введите логин и пароль что бы войти',
-                    //           style: AppTextStyles.textSecondary16,
-                    //           textAlign: TextAlign.center,
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
-                    // const Spacer(),
                     const SizedBox(height: 16),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),

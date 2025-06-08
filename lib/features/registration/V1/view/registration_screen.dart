@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:event_app/core/ui/common_button.dart';
 import 'package:event_app/core/ui/common_text_field.dart';
 import 'package:event_app/core/ui/theme/app_colors.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+@RoutePage()
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
 

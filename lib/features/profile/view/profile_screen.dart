@@ -229,7 +229,7 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
           // Вертикальный Divider
           Container(
             width: 0.5,
-            height: 30,
+            height: 36,
             color: AppColors.background.withAlpha(100),
           ),
           const SizedBox(width: 8),

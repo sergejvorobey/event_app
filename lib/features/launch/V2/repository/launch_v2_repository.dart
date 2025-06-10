@@ -5,7 +5,6 @@ import 'package:event_app/core/storage/storage_service.dart';
 import 'package:event_app/features/launch/V2/repository/launch_v2_repository_impl.dart';
 import 'package:event_app/features/profile/model/profile_response.dart';
 import 'package:event_app/features/registration/V1/repository/model/token_response.dart';
-import 'package:flutter/cupertino.dart';
 
 class LaunchV2Repository extends LaunchV2RepositoryImpl {
   final NetworkService _networkService;

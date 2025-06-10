@@ -43,6 +43,22 @@ class HomeRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [LaunchScreen]
+class LaunchRoute extends PageRouteInfo<void> {
+  const LaunchRoute({List<PageRouteInfo>? children})
+    : super(LaunchRoute.name, initialChildren: children);
+
+  static const String name = 'LaunchRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const LaunchScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [LaunchScreenV2]
 class LaunchRouteV2 extends PageRouteInfo<void> {
   const LaunchRouteV2({List<PageRouteInfo>? children})
@@ -54,6 +70,22 @@ class LaunchRouteV2 extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const LaunchScreenV2();
+    },
+  );
+}
+
+/// generated route for
+/// [ProfileScreen]
+class ProfileRoute extends PageRouteInfo<void> {
+  const ProfileRoute({List<PageRouteInfo>? children})
+    : super(ProfileRoute.name, initialChildren: children);
+
+  static const String name = 'ProfileRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ProfileScreen();
     },
   );
 }

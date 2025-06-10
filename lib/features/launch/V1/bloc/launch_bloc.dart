@@ -1,5 +1,5 @@
 import 'package:event_app/core/model/result.dart';
-import 'package:event_app/core/network/network_service.dart';
+import 'package:event_app/core/network/network_sevice_v2.dart';
 import 'package:event_app/features/launch/V1/model/launch_page.dart';
 import 'package:event_app/features/launch/V1/repository/launch_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +16,7 @@ class LaunchBloc extends Bloc<LaunchEvent, LaunchState> {
   }
 
   final LaunchRepository _repository = LaunchRepository(
-    networkService: NetworkService(),
+    networkService: NetworkServiceV2(),
   );
 
   void _handleContent(LaunchContent event, Emitter<LaunchState> emit) async {

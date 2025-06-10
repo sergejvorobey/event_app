@@ -1,11 +1,14 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:event_app/core/ui/common_button.dart';
 import 'package:event_app/core/ui/common_text_button.dart';
 import 'package:event_app/core/ui/theme/app_colors.dart';
 import 'package:event_app/core/ui/theme/app_text_styles.dart';
 import 'package:event_app/features/launch/V1/bloc/launch_bloc.dart';
+import 'package:event_app/routers/routers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+@RoutePage()
 class LaunchScreen extends StatefulWidget {
   const LaunchScreen({super.key});
 
@@ -46,17 +49,19 @@ final class LaunchScreenState extends State<LaunchScreen> {
         listener: (context, state) {
           switch (state) {
             case NavigateToHomeScreen():
-              Navigator.pushNamed(context, '/home');
+              AutoRouter.of(context).push(HomeRoute()).then((_) {
+                _launchBloc.add(LaunchContent());
+              });
               break;
 
             case NavigateToLoginScreen():
-              Navigator.pushNamed(context, '/auth').then((_) {
+              AutoRouter.of(context).push(AuthRoute()).then((_) {
                 _launchBloc.add(LaunchContent());
               });
               break;
 
             case NavigateToRegistrationScreen():
-              Navigator.pushNamed(context, '/registration').then((_) {
+              AutoRouter.of(context).push(RegistrationRoute()).then((_) {
                 _launchBloc.add(LaunchContent());
               });
               break;
@@ -69,7 +74,7 @@ final class LaunchScreenState extends State<LaunchScreen> {
           if (state is LaunchLoading) {
             return _buildLoadingIndicator();
           }
-          return const Spacer();
+          return const SizedBox.shrink();
         },
       ),
     );

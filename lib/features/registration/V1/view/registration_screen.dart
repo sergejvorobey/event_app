@@ -5,6 +5,7 @@ import 'package:event_app/core/ui/theme/app_colors.dart';
 import 'package:event_app/core/ui/widgets/common_top_toast_widget.dart';
 import 'package:event_app/core/ui/widgets/top_toast.dart';
 import 'package:event_app/features/registration/V1/bloc/registration_bloc.dart';
+import 'package:event_app/routers/routers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,7 +48,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               break;
 
             case TokenSuccess():
-              Navigator.pushNamed(context, '/home');
+              AutoRouter.of(context).push(HomeRoute());
               break;
 
             case RegistrationError(:final message) ||

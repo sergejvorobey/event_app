@@ -1,13 +1,13 @@
 import 'package:event_app/core/enum/http_method.dart';
 import 'package:event_app/core/model/result.dart';
-import 'package:event_app/core/network/network_service.dart';
+import 'package:event_app/core/network/network_sevice_v2.dart';
 import 'package:event_app/features/launch/V1/model/launch_content_response.dart';
 import 'package:event_app/features/launch/V1/repository/launch_repository_impl.dart';
 
 class LaunchRepository extends LaunchRepositoryImpl {
-  final NetworkService _networkService;
+  final NetworkServiceV2 _networkService;
 
-  LaunchRepository({required NetworkService networkService})
+  LaunchRepository({required NetworkServiceV2 networkService})
     : _networkService = networkService;
 
   @override

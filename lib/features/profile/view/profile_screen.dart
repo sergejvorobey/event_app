@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:event_app/core/navigation/route_observer.dart';
 import 'package:event_app/core/ui/common_loading_indicator.dart';
 import 'package:event_app/core/ui/theme/app_colors.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+@RoutePage()
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 

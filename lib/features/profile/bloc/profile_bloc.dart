@@ -1,5 +1,5 @@
 import 'package:event_app/core/model/result.dart';
-import 'package:event_app/core/network/network_service.dart';
+import 'package:event_app/core/network/network_sevice_v2.dart';
 import 'package:event_app/features/profile/model/profile_menu.dart';
 import 'package:event_app/features/profile/repository/profile_repository.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,7 +16,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   final ProfileRepository _profileRepository = ProfileRepository(
-    networkService: NetworkService(),
+    networkService: NetworkServiceV2(),
   );
 
   void _handleFetchProfile(

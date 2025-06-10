@@ -1,17 +1,17 @@
 import 'package:event_app/core/enum/http_method.dart';
 import 'package:event_app/core/model/result.dart';
-import 'package:event_app/core/network/network_service.dart';
+import 'package:event_app/core/network/network_sevice_v2.dart';
 import 'package:event_app/core/storage/storage_service.dart';
 import 'package:event_app/features/registration/V1/repository/model/registration_response.dart';
 import 'package:event_app/features/registration/V1/repository/model/token_response.dart';
 import 'package:event_app/features/registration/V1/repository/registration_repository_impl.dart';
 
 class RegistrationRepository extends RegistrationRepositoryImpl {
-  final NetworkService _networkService;
+  final NetworkServiceV2 _networkService;
   final StorageService _storageService;
 
   RegistrationRepository({
-    required NetworkService networkService,
+    required NetworkServiceV2 networkService,
     required StorageService storageService,
   }) : _networkService = networkService,
        _storageService = storageService;

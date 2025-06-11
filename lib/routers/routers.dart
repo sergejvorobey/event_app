@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:event_app/features/auth/V1/view/auth_screen.dart';
+import 'package:event_app/features/editProfile/view/edit_profile_screen.dart';
 import 'package:event_app/features/home/view/home_screen.dart';
 import 'package:event_app/features/launch/V1/view/launch_screen.dart';
 import 'package:event_app/features/launch/V2/view/launch_screen_v2.dart';
@@ -20,5 +21,6 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: AuthRoute.page),
     AutoRoute(page: RegistrationRoute.page),
     AutoRoute(page: HomeRoute.page),
+    AutoRoute(page: EditProfileRoute.page),
   ];
 }

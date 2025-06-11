@@ -58,7 +58,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
               ProfileMenu(
                 icon: CupertinoIcons.gear_alt_fill,
                 title: "Настройки",
-                text: "",
+                text: "Общие настройки приложения",
               ),
             ],
           ),

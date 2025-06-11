@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:event_app/core/ui/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+@RoutePage()
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
 

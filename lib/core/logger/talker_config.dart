@@ -10,7 +10,6 @@ class TalkerConfig {
     final talker = Talker(
       logger: TalkerLogger(settings: TalkerLoggerSettings())
     );
-      /// Just logs
     return talker;
   }
 

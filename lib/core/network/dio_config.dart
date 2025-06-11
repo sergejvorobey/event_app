@@ -5,10 +5,13 @@ import 'package:talker_dio_logger/talker_dio_logger_settings.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 class DioConfig {
-  static Dio createDio({String? baseUrl}) {
+
+  static final _baseUrl = 'http://194.87.236.187:8080/';
+
+  static Dio createDio() {
     final dio = Dio(
       BaseOptions(
-        baseUrl: baseUrl ?? 'http://194.87.236.187:8080/',
+        baseUrl: DioConfig._baseUrl,
         connectTimeout: const Duration(seconds: 15),
         receiveTimeout: const Duration(seconds: 15),
       ),

@@ -4,6 +4,7 @@ import 'package:event_app/core/ui/common_loading_indicator.dart';
 import 'package:event_app/core/ui/theme/app_colors.dart';
 import 'package:event_app/core/ui/theme/app_text_styles.dart';
 import 'package:event_app/features/profile/bloc/profile_bloc.dart';
+import 'package:event_app/routers/routers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,39 +47,30 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: null,
-      body: BlocConsumer<ProfileBloc, ProfileState>(
-        bloc: _profileBloc,
-        listener: (context, state) {
-          switch (state) {
-            case NavigateToEditProfileScreen():
-              Navigator.pushNamed(context, '/editProfile').then((_) {
-                _profileBloc.add(FetchProfile());
-              });
-              break;
-
-            // case NavigateToLoginScreen():
-            //   Navigator.pushNamed(context, '/auth').then((_) {
-            //     _launchBloc.add(LaunchContent());
-            //   });
-            //   break;
-
-            // case NavigateToRegistrationScreen():
-            //   Navigator.pushNamed(context, '/registration').then((_) {
-            //     _launchBloc.add(LaunchContent());
-            //   });
-            //   break;
-          }
-        },
-        builder: (BuildContext context, ProfileState state) {
-          if (state is ProfileLoading) {
-            return makeCommonLoadingIndicator();
-          }
-          if (state is ProfileContent) {
-            return _content(state);
-          }
-          return const Spacer();
-        },
+      body: MediaQuery.removePadding(
+        context: context,
+        removeTop: true,
+        child: BlocConsumer<ProfileBloc, ProfileState>(
+          bloc: _profileBloc,
+          listener: (context, state) {
+            switch (state) {
+              case NavigateToEditProfileScreen():
+                AutoRouter.of(context).push(EditProfileRoute()).then((_) {
+                  _profileBloc.add(FetchProfile());
+                });
+                break;
+            }
+          },
+          builder: (BuildContext context, ProfileState state) {
+            if (state is ProfileLoading) {
+              return makeCommonLoadingIndicator();
+            }
+            if (state is ProfileContent) {
+              return _content(state);
+            }
+            return const SizedBox.shrink();
+          },
+        ),
       ),
     );
   }
@@ -86,53 +78,47 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
   Widget _content(ProfileContent state) {
     final fullName =
         (state.firstName.isEmpty && state.lastName.isEmpty)
-            ? "Имя не указано"
+            ? state.login
             : "${state.firstName} ${state.lastName}";
     return Scaffold(
       body: Column(
         children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              width: double.infinity,
-              color: AppColors.greyDark,
-              child: SafeArea(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 16),
-                    _makeProfileImage(state),
-                    const SizedBox(height: 16),
-                    Text(
-                      fullName,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(state.city, style: AppTextStyles.textSecondary16Grey),
-                    const SizedBox(height: 16),
-                    _makeRating(),
-                  ],
+          Container(
+            width: double.infinity,
+            color: AppColors.greyDark,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const SizedBox(height: 124),
+                _makeProfileImage(state),
+                const SizedBox(height: 16),
+                Text(
+                  fullName,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
+                const SizedBox(height: 8),
+                Text(state.city, style: AppTextStyles.textSecondary16Grey),
+                const SizedBox(height: 16),
+                _makeRating(),
+                const SizedBox(height: 16),
+              ],
             ),
           ),
 
           // Нижняя половина
-          _makeProfileMenu(state),
+          _makeProfileMenuV2(state),
         ],
       ),
     );
   }
 
   Widget _makeProfileImage(ProfileContent state) {
-    final String firstChar =
-        (state.firstName.isNotEmpty) ? state.firstName[0] : "A";
-    final String lastChar =
-        (state.lastName.isNotEmpty) ? state.lastName[0] : "B";
+    final String firstChar = (state.firstName.isNotEmpty) ? state.firstName[0] : "A";
+    final String lastChar = (state.lastName.isNotEmpty) ? state.lastName[0] : "B";
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -266,9 +252,7 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
   }
 
   Widget _makeProfileMenu(ProfileContent state) {
-    return Expanded(
-      flex: 1,
-      child: Container(
+    return Container(
         color: Colors.white,
         child: Column(
           children: [
@@ -357,6 +341,72 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
             ],
           ],
         ),
+    );
+  }
+
+  Widget _makeProfileMenuV2(ProfileContent state) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: GridView.builder(
+        shrinkWrap: true,
+        itemCount: state.menu.length,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, // 2 колонки
+          mainAxisSpacing: 16,
+          crossAxisSpacing: 16,
+          childAspectRatio: 1.2,
+        ),
+        itemBuilder: (context, i) {
+          final item = state.menu[i];
+          final isPressed = _pressedIndexes.contains(i);
+
+          return GestureDetector(
+            onTapDown: (_) => setState(() => _pressedIndexes.add(i)),
+            onTapUp: (_) => setState(() => _pressedIndexes.remove(i)),
+            onTapCancel: () => setState(() => _pressedIndexes.remove(i)),
+            onTap: () => _profileBloc.add(ItemMenuProfilePressed(index: i)),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 100),
+              transform: Matrix4.identity()..scale(isPressed ? 0.95 : 1.0),
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppColors.backgroundSecondary.withAlpha(10),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Верхняя иконка
+                  Container(
+                    width: 42,
+                    height: 42,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withAlpha(40),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Icon(
+                        item.icon,
+                        size: 16,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  ),
+                  const Spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(item.title, style: AppTextStyles.headline16),
+                      const SizedBox(height: 4),
+                      if (item.text.isNotEmpty)
+                        Text(item.text, style: AppTextStyles.textSecondary12),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

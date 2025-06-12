@@ -63,8 +63,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             ],
           ),
         );
-      case Failure(exception: final exception):
-        emit(ProfileError(exception.toString()));
+      case Failure():
+        emit(
+          NavigateToEmptyStateScreen(
+            title: "Ошибка",
+            subtitle: "Что-то пошло не так, попробуйте еще раз",
+            actionTitle: "Обновить",
+          ),
+        );
     }
   }
 }

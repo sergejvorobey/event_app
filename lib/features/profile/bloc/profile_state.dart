@@ -96,7 +96,21 @@ class ProfileError extends ProfileState {
 }
 
 class NavigateToEditProfileScreen extends ProfileState {
+  @override
+  List<Object?> get props => [];
+}
 
-    @override
+class NavigateToEmptyStateScreen extends ProfileState {
+  final String title;
+  final String subtitle;
+  final String actionTitle;
+
+  const NavigateToEmptyStateScreen({
+    required this.title,
+    required this.subtitle,
+    required this.actionTitle,
+  });
+
+  @override
   List<Object?> get props => [];
 }

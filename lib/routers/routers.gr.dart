@@ -27,6 +27,89 @@ class AuthRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [CommonEmptyStateScreen]
+class CommonEmptyStateRoute extends PageRouteInfo<CommonEmptyStateRouteArgs> {
+  CommonEmptyStateRoute({
+    Key? key,
+    required String title,
+    required String subtitle,
+    required String actionTitle,
+    required VoidCallback action,
+    List<PageRouteInfo>? children,
+  }) : super(
+         CommonEmptyStateRoute.name,
+         args: CommonEmptyStateRouteArgs(
+           key: key,
+           title: title,
+           subtitle: subtitle,
+           actionTitle: actionTitle,
+           action: action,
+         ),
+         initialChildren: children,
+       );
+
+  static const String name = 'CommonEmptyStateRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<CommonEmptyStateRouteArgs>();
+      return CommonEmptyStateScreen(
+        key: args.key,
+        title: args.title,
+        subtitle: args.subtitle,
+        actionTitle: args.actionTitle,
+        action: args.action,
+      );
+    },
+  );
+}
+
+class CommonEmptyStateRouteArgs {
+  const CommonEmptyStateRouteArgs({
+    this.key,
+    required this.title,
+    required this.subtitle,
+    required this.actionTitle,
+    required this.action,
+  });
+
+  final Key? key;
+
+  final String title;
+
+  final String subtitle;
+
+  final String actionTitle;
+
+  final VoidCallback action;
+
+  @override
+  String toString() {
+    return 'CommonEmptyStateRouteArgs{key: $key, title: $title, subtitle: $subtitle, actionTitle: $actionTitle, action: $action}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! CommonEmptyStateRouteArgs) return false;
+    return key == other.key &&
+        title == other.title &&
+        subtitle == other.subtitle &&
+        actionTitle == other.actionTitle &&
+        action == other.action;
+  }
+
+  @override
+  int get hashCode =>
+      key.hashCode ^
+      title.hashCode ^
+      subtitle.hashCode ^
+      actionTitle.hashCode ^
+      action.hashCode;
+}
+
+/// generated route for
 /// [EditProfileScreen]
 class EditProfileRoute extends PageRouteInfo<void> {
   const EditProfileRoute({List<PageRouteInfo>? children})

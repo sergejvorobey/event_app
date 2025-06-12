@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:event_app/core/navigation/route_observer.dart';
+import 'package:event_app/core/ui/common_empty_state_screen.dart';
 import 'package:event_app/core/ui/common_loading_indicator.dart';
 import 'package:event_app/core/ui/theme/app_colors.dart';
 import 'package:event_app/core/ui/theme/app_text_styles.dart';
@@ -59,16 +60,35 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
                   _profileBloc.add(FetchProfile());
                 });
                 break;
+              case NavigateToEmptyStateScreen(
+                title: final title,
+                subtitle: final subtitle,
+                actionTitle: final actionTitle,
+              ):
+                AutoRouter.of(context).push(
+                  CommonEmptyStateRoute(
+                    title: title,
+                    subtitle: subtitle,
+                    actionTitle: actionTitle,
+                    action: () {
+                      AutoRouter.of(context).pop();
+                    },
+                  ),
+                ).then((_) {
+                  _profileBloc.add(FetchProfile());
+                });
+                break;
             }
           },
           builder: (BuildContext context, ProfileState state) {
-            if (state is ProfileLoading) {
-              return makeCommonLoadingIndicator();
+            switch (state) {
+              case ProfileLoading():
+                return makeCommonLoadingIndicator();
+              case ProfileContent():
+                return _content(state);
+              default:
+                return const SizedBox.shrink();
             }
-            if (state is ProfileContent) {
-              return _content(state);
-            }
-            return const SizedBox.shrink();
           },
         ),
       ),
@@ -117,8 +137,10 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
   }
 
   Widget _makeProfileImage(ProfileContent state) {
-    final String firstChar = (state.firstName.isNotEmpty) ? state.firstName[0] : "A";
-    final String lastChar = (state.lastName.isNotEmpty) ? state.lastName[0] : "B";
+    final String firstChar =
+        (state.firstName.isNotEmpty) ? state.firstName[0] : "A";
+    final String lastChar =
+        (state.lastName.isNotEmpty) ? state.lastName[0] : "B";
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -253,94 +275,91 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
 
   Widget _makeProfileMenu(ProfileContent state) {
     return Container(
-        color: Colors.white,
-        child: Column(
-          children: [
-            const SizedBox(height: 12),
-            for (int i = 0; i < state.menu.length; i++) ...[
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
-                ),
-                child: GestureDetector(
-                  onTapDown: (_) {
-                    setState(() {
-                      _pressedIndexes.add(i);
-                    });
-                  },
-                  onTapUp: (_) {
-                    setState(() {
-                      _pressedIndexes.remove(i);
-                    });
-                  },
-                  onTapCancel: () {
-                    setState(() {
-                      _pressedIndexes.remove(i);
-                    });
-                  },
-                  onTap: () {
-                    _profileBloc.add(ItemMenuProfilePressed(index: i));
-                  },
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 100),
-                    transform:
-                        Matrix4.identity()
-                          ..scale(_pressedIndexes.contains(i) ? 0.95 : 1.0),
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: AppColors.backgroundSecondary.withAlpha(10),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 42,
-                          height: 42,
-                          decoration: BoxDecoration(
-                            color: AppColors.primary.withAlpha(40),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Center(
-                            child: Icon(
-                              state.menu[i].icon,
-                              size: 16,
-                              color: AppColors.primary,
-                            ),
+      color: Colors.white,
+      child: Column(
+        children: [
+          const SizedBox(height: 12),
+          for (int i = 0; i < state.menu.length; i++) ...[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: GestureDetector(
+                onTapDown: (_) {
+                  setState(() {
+                    _pressedIndexes.add(i);
+                  });
+                },
+                onTapUp: (_) {
+                  setState(() {
+                    _pressedIndexes.remove(i);
+                  });
+                },
+                onTapCancel: () {
+                  setState(() {
+                    _pressedIndexes.remove(i);
+                  });
+                },
+                onTap: () {
+                  _profileBloc.add(ItemMenuProfilePressed(index: i));
+                },
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 100),
+                  transform:
+                      Matrix4.identity()
+                        ..scale(_pressedIndexes.contains(i) ? 0.95 : 1.0),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppColors.backgroundSecondary.withAlpha(10),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 42,
+                        height: 42,
+                        decoration: BoxDecoration(
+                          color: AppColors.primary.withAlpha(40),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: Icon(
+                            state.menu[i].icon,
+                            size: 16,
+                            color: AppColors.primary,
                           ),
                         ),
-                        const SizedBox(width: 16),
-                        Column(
-                          spacing: 0,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                      ),
+                      const SizedBox(width: 16),
+                      Column(
+                        spacing: 0,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            state.menu[i].title,
+                            style: AppTextStyles.headline16,
+                          ),
+                          const SizedBox(height: 4),
+                          if (state.menu[i].text.isNotEmpty)
                             Text(
-                              state.menu[i].title,
-                              style: AppTextStyles.headline16,
+                              state.menu[i].text,
+                              style: AppTextStyles.textSecondary12,
                             ),
-                            const SizedBox(height: 4),
-                            if (state.menu[i].text.isNotEmpty)
-                              Text(
-                                state.menu[i].text,
-                                style: AppTextStyles.textSecondary12,
-                              ),
-                          ],
-                        ),
+                        ],
+                      ),
 
-                        // Icon(
-                        //   CupertinoIcons.chevron_right,
-                        //   size: 16,
-                        //   color: AppColors.greyDark.withAlpha(100),
-                        // ),
-                      ],
-                    ),
+                      // Icon(
+                      //   CupertinoIcons.chevron_right,
+                      //   size: 16,
+                      //   color: AppColors.greyDark.withAlpha(100),
+                      // ),
+                    ],
                   ),
                 ),
               ),
-            ],
+            ),
           ],
-        ),
+        ],
+      ),
     );
   }
 

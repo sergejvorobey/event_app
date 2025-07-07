@@ -1,15 +1,15 @@
 part of 'auth_bloc.dart';
 
 class AuthState extends Equatable {
-  final CommonTextFieldHandle? login;
-  final CommonTextFieldHandle? password;
+  final CommonTextFieldHandler? login;
+  final CommonTextFieldHandler? password;
   final bool isButtonEnabled;
 
   const AuthState({this.login, this.password, this.isButtonEnabled = true});
 
   AuthState copyWith({
-    CommonTextFieldHandle? login,
-    CommonTextFieldHandle? password,
+    CommonTextFieldHandler? login,
+    CommonTextFieldHandler? password,
     bool? isButtonEnabled,
   }) {
     final updatedLogin = login ?? this.login;
@@ -32,13 +32,13 @@ class AuthState extends Equatable {
 class AuthInitial extends AuthState {
   AuthInitial()
     : super(
-        login: CommonTextFieldHandle(
+        login: CommonTextFieldHandler(
           value: "",
           label: "Логин",
           placeholder: "Введите логин",
           message: "Начните вводить логин",
         ),
-        password: CommonTextFieldHandle(
+        password: CommonTextFieldHandler(
           value: "",
           label: "Пароль",
           placeholder: "Введите пароль",

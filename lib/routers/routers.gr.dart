@@ -27,6 +27,58 @@ class AuthRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [CityScreen]
+class CityRoute extends PageRouteInfo<CityRouteArgs> {
+  CityRoute({
+    Key? key,
+    String? selectedCityTitle,
+    List<PageRouteInfo>? children,
+  }) : super(
+         CityRoute.name,
+         args: CityRouteArgs(key: key, selectedCityTitle: selectedCityTitle),
+         initialChildren: children,
+       );
+
+  static const String name = 'CityRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<CityRouteArgs>(
+        orElse: () => const CityRouteArgs(),
+      );
+      return CityScreen(
+        key: args.key,
+        selectedCityTitle: args.selectedCityTitle,
+      );
+    },
+  );
+}
+
+class CityRouteArgs {
+  const CityRouteArgs({this.key, this.selectedCityTitle});
+
+  final Key? key;
+
+  final String? selectedCityTitle;
+
+  @override
+  String toString() {
+    return 'CityRouteArgs{key: $key, selectedCityTitle: $selectedCityTitle}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! CityRouteArgs) return false;
+    return key == other.key && selectedCityTitle == other.selectedCityTitle;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ selectedCityTitle.hashCode;
+}
+
+/// generated route for
 /// [CommonEmptyStateScreen]
 class CommonEmptyStateRoute extends PageRouteInfo<CommonEmptyStateRouteArgs> {
   CommonEmptyStateRoute({
@@ -174,6 +226,22 @@ class LaunchRouteV2 extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [MainScreen]
+class MainRoute extends PageRouteInfo<void> {
+  const MainRoute({List<PageRouteInfo>? children})
+    : super(MainRoute.name, initialChildren: children);
+
+  static const String name = 'MainRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const MainScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [ProfileScreen]
 class ProfileRoute extends PageRouteInfo<void> {
   const ProfileRoute({List<PageRouteInfo>? children})
@@ -201,6 +269,22 @@ class RegistrationRoute extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const RegistrationScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [SettingsScreen]
+class SettingsRoute extends PageRouteInfo<void> {
+  const SettingsRoute({List<PageRouteInfo>? children})
+    : super(SettingsRoute.name, initialChildren: children);
+
+  static const String name = 'SettingsRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SettingsScreen();
     },
   );
 }

@@ -18,9 +18,7 @@ migrate_working_dir/
 *.iws
 .idea/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
+# VS Code
 #.vscode/
 
 # Flutter/Dart/Pub related
@@ -29,9 +27,14 @@ migrate_working_dir/
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
+.packages
 .pub-cache/
 .pub/
 /build/
+generated_plugin_registrant.dart
+generated_plugin_registrant.cc
+generated_plugin_registrant.h
+.melos_tool/
 
 # Symbolication related
 app.*.symbols
@@ -39,11 +42,71 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
-# Android Studio will place build artifacts here
+# Android specific
 /android/app/debug
 /android/app/profile
 /android/app/release
+**/android/.gradle/
+**/android/local.properties
+**/android/.idea/
+**/android/captures/
+/android/key.properties
 
-# "JSON to Dart Model" generator tracker files locations.
-/.json_models/
+# Xcode / iOS specific
+*.xcworkspace
+*.xcuserstate
+*.xcuserdata/
+*.xcodeproj/project.xcworkspace/
+*.xcodeproj/xcuserdata/
+/ios/Pods/
+/ios/.symlinks/
+/ios/Flutter/Flutter.framework/
+/ios/Flutter/Flutter.podspec
+ios/Runner.xcworkspace/
+ios/Runner.xcodeproj/project.xcworkspace/
+ios/Flutter/App.framework
+ios/Flutter/Generated.xcconfig
+ios/Flutter/ephemeral/
+Profile
+DerivedData/
+.idea/
+
+# Web specific
+/web/generated/
+web/.dart_tool/
+/web/.idea/
+
+# Linux / Windows / macOS build folders
+linux/flutter/ephemeral/
+macos/Flutter/ephemeral/
+windows/flutter/ephemeral/
+windows/runner/generated_plugin_registrant.cc
+windows/runner/generated_plugin_registrant.h
+
+# JSON to Dart Model Generator
+/json_models/
 models.jsonc
+
+# Firebase / Google services (не класть в гит, чувствительные данные)
+google-services.json
+GoogleService-Info.plist
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+
+# Other tools
+*.tmproj
+*.bak
+*.orig
+*.rej
+*.tmp
+
+# IDEs & Tools general
+*.sublime-workspace
+*.sublime-project
+*.code-workspace
+
+# Backup files
+*~

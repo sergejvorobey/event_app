@@ -3,9 +3,9 @@ part of 'registration_bloc.dart';
 class RegistrationState extends Equatable {
   // MARK: - Property
 
-  final CommonTextFieldHandle? login;
-  final CommonTextFieldHandle? password;
-  final CommonTextFieldHandle? confirmPassword;
+  final CommonTextFieldHandler? login;
+  final CommonTextFieldHandler? password;
+  final CommonTextFieldHandler? confirmPassword;
   final bool isButtonEnabled;
 
   const RegistrationState({
@@ -16,9 +16,9 @@ class RegistrationState extends Equatable {
   });
 
   RegistrationState copyWith({
-    CommonTextFieldHandle? login,
-    CommonTextFieldHandle? password,
-    CommonTextFieldHandle? confirmPassword,
+    CommonTextFieldHandler? login,
+    CommonTextFieldHandler? password,
+    CommonTextFieldHandler? confirmPassword,
     bool? isButtonEnabled,
   }) {
     final updatedLogin = login ?? this.login;
@@ -52,19 +52,19 @@ class RegistrationState extends Equatable {
 class RegistrationInitial extends RegistrationState {
   RegistrationInitial()
     : super(
-        login: CommonTextFieldHandle(
+        login: CommonTextFieldHandler(
           value: "",
           label: "Логин",
           placeholder: "Введите логин",
           message: "Начните вводить логин",
         ),
-        password: CommonTextFieldHandle(
+        password: CommonTextFieldHandler(
           value: "",
           label: "Пароль",
           placeholder: "Введите пароль",
           message: "Начните вводить пароль",
         ),
-        confirmPassword: CommonTextFieldHandle(
+        confirmPassword: CommonTextFieldHandler(
           value: "",
           label: "Повторите пароль",
           placeholder: "Введите пароль",

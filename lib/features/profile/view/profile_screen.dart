@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:event_app/core/navigation/route_observer.dart';
-import 'package:event_app/core/ui/common_empty_state_screen.dart';
 import 'package:event_app/core/ui/common_loading_indicator.dart';
 import 'package:event_app/core/ui/theme/app_colors.dart';
 import 'package:event_app/core/ui/theme/app_text_styles.dart';
@@ -60,23 +59,30 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
                   _profileBloc.add(FetchProfile());
                 });
                 break;
+              case NavigateToSettingsScreen():
+                AutoRouter.of(context).push(SettingsRoute()).then((_) {
+                  _profileBloc.add(FetchProfile());
+                });
+                break;
               case NavigateToEmptyStateScreen(
                 title: final title,
                 subtitle: final subtitle,
                 actionTitle: final actionTitle,
               ):
-                AutoRouter.of(context).push(
-                  CommonEmptyStateRoute(
-                    title: title,
-                    subtitle: subtitle,
-                    actionTitle: actionTitle,
-                    action: () {
-                      AutoRouter.of(context).pop();
-                    },
-                  ),
-                ).then((_) {
-                  _profileBloc.add(FetchProfile());
-                });
+                AutoRouter.of(context)
+                    .push(
+                      CommonEmptyStateRoute(
+                        title: title,
+                        subtitle: subtitle,
+                        actionTitle: actionTitle,
+                        action: () {
+                          AutoRouter.of(context).pop();
+                        },
+                      ),
+                    )
+                    .then((_) {
+                      _profileBloc.add(FetchProfile());
+                    });
                 break;
             }
           },
@@ -85,7 +91,7 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
               case ProfileLoading():
                 return makeCommonLoadingIndicator();
               case ProfileContent():
-                return _content(state);
+                return _contentV2(state);
               default:
                 return const SizedBox.shrink();
             }
@@ -95,7 +101,7 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
     );
   }
 
-  Widget _content(ProfileContent state) {
+  Widget _contentV2(ProfileContent state) {
     final fullName =
         (state.firstName.isEmpty && state.lastName.isEmpty)
             ? state.login
@@ -103,33 +109,35 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
     return Scaffold(
       body: Column(
         children: [
+          // Верхняя часть профиля — фиксирована
           Container(
             width: double.infinity,
             color: AppColors.greyDark,
+            padding: const EdgeInsets.symmetric(vertical: 24),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const SizedBox(height: 124),
+                const SizedBox(height: 100),
                 _makeProfileImage(state),
                 const SizedBox(height: 16),
                 Text(
                   fullName,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 8),
-                Text(state.city, style: AppTextStyles.textSecondary16Grey),
+                if (state.city.isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  Text(state.city, style: AppTextStyles.textSecondary16Grey),
+                ],
                 const SizedBox(height: 16),
                 _makeRating(),
-                const SizedBox(height: 16),
               ],
             ),
           ),
 
-          // Нижняя половина
+          // Нижняя часть — скроллируемая
           _makeProfileMenuV2(state),
         ],
       ),
@@ -273,159 +281,69 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
     );
   }
 
-  Widget _makeProfileMenu(ProfileContent state) {
-    return Container(
-      color: Colors.white,
-      child: Column(
-        children: [
-          const SizedBox(height: 12),
-          for (int i = 0; i < state.menu.length; i++) ...[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: GestureDetector(
-                onTapDown: (_) {
-                  setState(() {
-                    _pressedIndexes.add(i);
-                  });
-                },
-                onTapUp: (_) {
-                  setState(() {
-                    _pressedIndexes.remove(i);
-                  });
-                },
-                onTapCancel: () {
-                  setState(() {
-                    _pressedIndexes.remove(i);
-                  });
-                },
-                onTap: () {
-                  _profileBloc.add(ItemMenuProfilePressed(index: i));
-                },
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 100),
-                  transform:
-                      Matrix4.identity()
-                        ..scale(_pressedIndexes.contains(i) ? 0.95 : 1.0),
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: AppColors.backgroundSecondary.withAlpha(10),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 42,
-                        height: 42,
-                        decoration: BoxDecoration(
-                          color: AppColors.primary.withAlpha(40),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Center(
-                          child: Icon(
-                            state.menu[i].icon,
-                            size: 16,
-                            color: AppColors.primary,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Column(
-                        spacing: 0,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            state.menu[i].title,
-                            style: AppTextStyles.headline16,
-                          ),
-                          const SizedBox(height: 4),
-                          if (state.menu[i].text.isNotEmpty)
-                            Text(
-                              state.menu[i].text,
-                              style: AppTextStyles.textSecondary12,
-                            ),
-                        ],
-                      ),
+  Widget _makeProfileMenuV2(ProfileContent state) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+        child: GridView.builder(
+          itemCount: state.menu.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 16,
+            crossAxisSpacing: 16,
+            childAspectRatio: 1.2,
+          ),
+          itemBuilder: (context, i) {
+            final item = state.menu[i];
+            final isPressed = _pressedIndexes.contains(i);
 
-                      // Icon(
-                      //   CupertinoIcons.chevron_right,
-                      //   size: 16,
-                      //   color: AppColors.greyDark.withAlpha(100),
-                      // ),
-                    ],
-                  ),
+            return GestureDetector(
+              onTapDown: (_) => setState(() => _pressedIndexes.add(i)),
+              onTapUp: (_) => setState(() => _pressedIndexes.remove(i)),
+              onTapCancel: () => setState(() => _pressedIndexes.remove(i)),
+              onTap: () => _profileBloc.add(ItemMenuProfilePressed(index: i)),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 100),
+                transform: Matrix4.identity()..scale(isPressed ? 0.95 : 1.0),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppColors.backgroundSecondary.withAlpha(10),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 42,
+                      height: 42,
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withAlpha(40),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Center(
+                        child: Icon(
+                          item.icon,
+                          size: 16,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(item.title, style: AppTextStyles.headline16),
+                        const SizedBox(height: 4),
+                        if (item.text.isNotEmpty)
+                          Text(item.text, style: AppTextStyles.textSecondary12),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-
-  Widget _makeProfileMenuV2(ProfileContent state) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: GridView.builder(
-        shrinkWrap: true,
-        itemCount: state.menu.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, // 2 колонки
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
-          childAspectRatio: 1.2,
+            );
+          },
         ),
-        itemBuilder: (context, i) {
-          final item = state.menu[i];
-          final isPressed = _pressedIndexes.contains(i);
-
-          return GestureDetector(
-            onTapDown: (_) => setState(() => _pressedIndexes.add(i)),
-            onTapUp: (_) => setState(() => _pressedIndexes.remove(i)),
-            onTapCancel: () => setState(() => _pressedIndexes.remove(i)),
-            onTap: () => _profileBloc.add(ItemMenuProfilePressed(index: i)),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 100),
-              transform: Matrix4.identity()..scale(isPressed ? 0.95 : 1.0),
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: AppColors.backgroundSecondary.withAlpha(10),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Верхняя иконка
-                  Container(
-                    width: 42,
-                    height: 42,
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withAlpha(40),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Center(
-                      child: Icon(
-                        item.icon,
-                        size: 16,
-                        color: AppColors.primary,
-                      ),
-                    ),
-                  ),
-                  const Spacer(),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(item.title, style: AppTextStyles.headline16),
-                      const SizedBox(height: 4),
-                      if (item.text.isNotEmpty)
-                        Text(item.text, style: AppTextStyles.textSecondary12),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
       ),
     );
   }

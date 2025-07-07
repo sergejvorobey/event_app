@@ -23,6 +23,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final FocusNode _loginTextFieldFocusNode = FocusNode();
   final FocusNode _passwordTextFieldFocusNode = FocusNode();
   final FocusNode _confirmPasswordTextFieldFocusNode = FocusNode();
+  bool _isSecurePassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +54,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
             case RegistrationError(:final message) ||
                 TokenError(:final message):
-              showTopToast(
-                context: context,
+              showToast(
                 title: 'Ошибка',
                 message: message,
                 type: ToastType.error,
@@ -83,7 +83,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             onValueChanged: _onLoginTextChanged,
                             hintColor: Colors.grey,
                             focusNode: _loginTextFieldFocusNode,
-                            isShowKeyboard: true,
+                            isFocused: true,
                           ),
                           CommonTextField(
                             value: state.password?.value ?? "",
@@ -92,8 +92,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             hint: state.password?.message ?? "",
                             onValueChanged: _onPasswordTextChanged,
                             hintColor: Colors.grey,
-                            isSecure: true,
+                            isSecure: _isSecurePassword,
                             focusNode: _passwordTextFieldFocusNode,
+                            rightIcon: CupertinoIcons.eye_fill,
+                            onTapRightIcon: () {
+                              _onTapSecure();
+                            },
                           ),
                           CommonTextField(
                             value: state.confirmPassword?.value ?? "",
@@ -103,8 +107,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             hint: state.confirmPassword?.message ?? "",
                             onValueChanged: _onConfirmPasswordTextChanged,
                             hintColor: Colors.grey,
-                            isSecure: true,
+                            isSecure: _isSecurePassword,
                             focusNode: _confirmPasswordTextFieldFocusNode,
+                            rightIcon: CupertinoIcons.eye_fill,
+                            onTapRightIcon: () {
+                              _onTapSecure();
+                            },
                           ),
                         ],
                       ),
@@ -149,5 +157,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   void _onConfirmPasswordTextChanged(String value) {
     _regBloc.add(ConfirmPasswordChanged(value));
+  }
+
+  void _onTapSecure() {
+    setState(() {
+      _isSecurePassword = !_isSecurePassword;
+    });
   }
 }

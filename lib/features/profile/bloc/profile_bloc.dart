@@ -60,6 +60,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
                 title: "Настройки",
                 text: "Общие настройки приложения",
               ),
+              ProfileMenu(
+                icon: CupertinoIcons.info_circle_fill,
+                title: "О приложении",
+                text: "",
+              ),
             ],
           ),
         );
@@ -73,14 +78,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         );
     }
   }
-}
 
-void _handleItemMenuProfilePressed(
-  ItemMenuProfilePressed event,
-  Emitter<ProfileState> emit,
-) {
-  switch (event.index) {
-    case 0:
-      emit(NavigateToEditProfileScreen());
+  void _handleItemMenuProfilePressed(
+    ItemMenuProfilePressed event,
+    Emitter<ProfileState> emit,
+  ) {
+    switch (event.index) {
+      case 0:
+        emit(NavigateToEditProfileScreen());
+      case 3:
+        emit(NavigateToSettingsScreen());
+    }
   }
 }

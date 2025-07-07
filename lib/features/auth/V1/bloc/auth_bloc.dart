@@ -1,7 +1,7 @@
 import 'package:event_app/core/model/result.dart';
 import 'package:event_app/core/network/network_sevice_v2.dart';
 import 'package:event_app/core/storage/storage_service.dart';
-import 'package:event_app/core/ui/common_text_field_handle.dart';
+import 'package:event_app/core/ui/common_text_field_handler.dart';
 import 'package:event_app/core/validation/input_validators.dart';
 import 'package:event_app/features/auth/V1/repository/auth_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

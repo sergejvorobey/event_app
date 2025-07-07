@@ -25,7 +25,6 @@ class CommonEmptyStateScreen extends StatefulWidget {
 }
 
 final class CommonEmptyStateScreenState extends State<CommonEmptyStateScreen> {
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,20 +37,20 @@ final class CommonEmptyStateScreenState extends State<CommonEmptyStateScreen> {
             children: [
               const Spacer(),
               Container(
-                    width: 64,
-                    height: 64,
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withAlpha(40),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Center(
-                      child: Icon(
-                        CupertinoIcons.exclamationmark_triangle_fill,
-                        size: 32,
-                        color: AppColors.primary,
-                      ),
-                    ),
+                width: 64,
+                height: 64,
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withAlpha(40),
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: Icon(
+                    CupertinoIcons.exclamationmark_triangle_fill,
+                    size: 32,
+                    color: AppColors.primary,
                   ),
+                ),
+              ),
               const SizedBox(height: 16),
               Text(widget.title, style: AppTextStyles.headline1),
               Text(widget.subtitle, style: AppTextStyles.bodyText1),

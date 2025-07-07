@@ -100,6 +100,11 @@ class NavigateToEditProfileScreen extends ProfileState {
   List<Object?> get props => [];
 }
 
+class NavigateToSettingsScreen extends ProfileState {
+  @override
+  List<Object?> get props => [];
+}
+
 class NavigateToEmptyStateScreen extends ProfileState {
   final String title;
   final String subtitle;
@@ -112,5 +117,5 @@ class NavigateToEmptyStateScreen extends ProfileState {
   });
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [title, subtitle, actionTitle];
 }

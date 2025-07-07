@@ -15,7 +15,7 @@ class EventApp extends StatefulWidget {
 class _EventAppState extends State<EventApp> {
   final _appRouter = AppRouter();
 
-  // TODO: - Добавить Android/iOS flow
+  // TODO: - Добавить Android/iOS flow (Тема светлая/темная)
 
   @override
   Widget build(BuildContext context) {

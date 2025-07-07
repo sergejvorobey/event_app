@@ -1,23 +1,23 @@
-class CommonTextFieldHandle {
+class CommonTextFieldHandler {
   final String value;
   final String label;
   final String placeholder;
   final String message;
 
-  CommonTextFieldHandle({
+  CommonTextFieldHandler({
     required this.value,
     required this.label,
     required this.placeholder,
     required this.message,
   });
 
-  CommonTextFieldHandle copyWith({
+  CommonTextFieldHandler copyWith({
     String? value,
     String? label,
     String? placeholder,
     String? message,
   }) {
-    return CommonTextFieldHandle(
+    return CommonTextFieldHandler(
       value: value ?? this.value,
       label: label ?? this.label,
       placeholder: placeholder ?? this.placeholder,

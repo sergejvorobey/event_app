@@ -22,11 +22,12 @@ class AuthScreen extends StatefulWidget {
 // MARK: - Lifecycle
 
 final class AuthScreenState extends State<AuthScreen> {
+  
   // MARK: - Property
 
   final FocusNode _loginTextFieldFocusNode = FocusNode();
   final FocusNode _passwordTextFieldFocusNode = FocusNode();
-  final bool isEnableButton = false;
+  bool _isSecurePassword = true;
 
   final AuthBloc _authBloc = AuthBloc();
 
@@ -68,9 +69,8 @@ final class AuthScreenState extends State<AuthScreen> {
               break;
 
             case AuthError(:final message) || TokenError(:final message):
-              showTopToast(
-                context: context,
-                title: 'Ошибка',
+              showToast(
+                title: "Ошибка",
                 message: message,
                 type: ToastType.error,
               );
@@ -98,7 +98,7 @@ final class AuthScreenState extends State<AuthScreen> {
                         hintColor: Colors.grey,
                         isSecure: false,
                         focusNode: _loginTextFieldFocusNode,
-                        isShowKeyboard: true,
+                        isFocused: true,
                       ),
                     ),
                     Padding(
@@ -111,9 +111,13 @@ final class AuthScreenState extends State<AuthScreen> {
                         onValueChanged: _onPasswordTextChanged,
                         isStartIndicator: false,
                         hintColor: Colors.grey,
-                        isSecure: true,
+                        isSecure: _isSecurePassword,
                         focusNode: _passwordTextFieldFocusNode,
-                        isShowKeyboard: false,
+                        isFocused: false,
+                        rightIcon: CupertinoIcons.eye_fill,
+                        onTapRightIcon: () {
+                          _onTapSecure();
+                        },
                       ),
                     ),
                     const Spacer(),
@@ -164,5 +168,11 @@ final class AuthScreenState extends State<AuthScreen> {
 
   void _onPasswordTextChanged(String value) {
     _authBloc.add(PasswordChanged(value));
+  }
+
+  void _onTapSecure() {
+    setState(() {
+      _isSecurePassword = !_isSecurePassword;
+    });
   }
 }

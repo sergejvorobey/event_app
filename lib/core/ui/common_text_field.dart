@@ -19,7 +19,8 @@ class CommonTextField extends StatefulWidget {
   final IconData? rightIcon;
   final VoidCallback? onTapRightIcon;
   final FocusNode? focusNode;
-  final bool isShowKeyboard;
+  final bool isFocused;
+  final VoidCallback? onTap;
 
   const CommonTextField({
     super.key,
@@ -39,7 +40,8 @@ class CommonTextField extends StatefulWidget {
     this.rightIcon,
     this.onTapRightIcon,
     this.focusNode,
-    this.isShowKeyboard = false,
+    this.isFocused = false,
+    this.onTap
   });
 
   @override
@@ -58,7 +60,7 @@ final class CommonTextFieldState extends State<CommonTextField> {
     _controller = TextEditingController(text: widget.value);
     _focusNode = widget.focusNode ?? FocusNode();
 
-    if (widget.isShowKeyboard) {
+    if (widget.isFocused) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         FocusScope.of(context).requestFocus(_focusNode);
       });
@@ -176,18 +178,23 @@ final class CommonTextFieldState extends State<CommonTextField> {
                             textCapitalization: TextCapitalization.none,
                             autofillHints: const <String>[],
                             keyboardType: TextInputType.text,
+                            readOnly: widget.onTap != null,
+                            onTap: widget.onTap, 
                           ),
                         ],
                       ),
                     ),
                   ),
                   if (widget.rightIcon != null)
-                    GestureDetector(
-                      onTap: widget.onTapRightIcon,
-                      child: Icon(
-                        widget.rightIcon,
-                        size: 20,
-                        color: Colors.grey,
+                    Padding(
+                      padding: const EdgeInsets.only(right: 16),
+                      child: GestureDetector(
+                        onTap: widget.onTapRightIcon,
+                        child: Icon(
+                          widget.rightIcon,
+                          size: 20,
+                          color: Colors.grey,
+                        ),
                       ),
                     ),
                 ],

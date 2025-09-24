@@ -2,7 +2,7 @@ import 'package:event_app/core/enum/http_method.dart';
 import 'package:event_app/core/model/http_exception.dart';
 import 'package:event_app/core/network/dio_config.dart';
 import 'package:event_app/core/storage/storage_service.dart';
-import 'package:event_app/features/registration/V1/repository/model/token_response.dart';
+import 'package:event_app/features/auth/registration/V1/repository/model/token_response.dart';
 import 'package:dio/dio.dart';
 
 class NetworkServiceV2 {
@@ -14,25 +14,28 @@ class NetworkServiceV2 {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onError: (error, handler) async {
-          if (error.response?.statusCode == 401) {
+          final isRefreshing = error.requestOptions.extra['__isRetry'] == true;
+
+          if (error.response?.statusCode == 401 && !isRefreshing) {
             try {
               await refreshToken();
-              final accessToken = await StorageService().getAccessToken();
-              error.requestOptions.headers['Authorization'] = 'Bearer $accessToken';
-              final response = await _dio.request(
-                error.requestOptions.path,
-                options: Options(
-                  method: error.requestOptions.method,
-                  headers: error.requestOptions.headers,
-                ),
-                data: error.requestOptions.data,
-                queryParameters: error.requestOptions.queryParameters,
+              final accessToken = await _storageService.getAccessToken();
+
+              final newRequestOptions = error.requestOptions.copyWith(
+                headers: {
+                  ...error.requestOptions.headers,
+                  'Authorization': 'Bearer $accessToken',
+                },
+                extra: {...error.requestOptions.extra, '__isRetry': true},
               );
+
+              final response = await _dio.fetch(newRequestOptions);
               return handler.resolve(response);
             } catch (e) {
               return handler.reject(error);
             }
           }
+
           return handler.next(error);
         },
       ),
@@ -101,25 +104,31 @@ class NetworkServiceV2 {
 
   Future refreshToken() async {
     final refreshToken = await _storageService.getRefreshToken();
+
     if (refreshToken == null) {
       throw HttpException(message: "Refresh token is empty");
-    } else {
-      try {
-        final response = await request(
-          path: "token/refresh",
-          method: HttpMethod.post,
-          body: {"refreshToken": await _storageService.getRefreshToken()},
-        );
-        final tokenResponse = TokenResponse.fromJson(
-          response as Map<String, dynamic>,
-        );
-        await _storageService.saveTokens(
-          accessToken: tokenResponse.accessToken,
-          refreshToken: tokenResponse.refreshToken,
-        );
-      } catch (e) {
-        rethrow;
-      }
+    }
+
+    try {
+      final response = await _dio.post(
+        'auth/refresh',
+        data: {'refreshToken': refreshToken},
+        options: Options(
+          headers: {'Content-Type': 'application/json'},
+          extra: {'__isRetry': true},
+        ),
+      );
+
+      final tokenResponse = TokenResponse.fromJson(
+        response.data as Map<String, dynamic>,
+      );
+
+      await _storageService.saveTokens(
+        accessToken: tokenResponse.accessToken,
+        refreshToken: tokenResponse.refreshToken,
+      );
+    } catch (_) {
+      throw HttpException(message: "Token refresh failed");
     }
   }
 

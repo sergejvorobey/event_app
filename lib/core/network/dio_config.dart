@@ -5,8 +5,8 @@ import 'package:talker_dio_logger/talker_dio_logger_settings.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 class DioConfig {
-
-  static final _baseUrl = 'http://194.87.236.187:8080/';
+  // static final _baseUrl = 'http://194.87.236.187:8080/';
+  static final _baseUrl = 'http://localhost:3000/api/';
 
   static Dio createDio() {
     final dio = Dio(

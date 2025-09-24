@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:event_app/core/enum/http_method.dart';
 import 'package:event_app/core/model/http_exception.dart';
 import 'package:event_app/core/storage/storage_service.dart';
-import 'package:event_app/features/registration/V1/repository/model/token_response.dart';
+import 'package:event_app/features/auth/registration/V1/repository/model/token_response.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:talker_flutter/talker_flutter.dart';

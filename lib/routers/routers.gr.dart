@@ -11,6 +11,38 @@
 part of 'routers.dart';
 
 /// generated route for
+/// [AboutAppScreen]
+class AboutAppRoute extends PageRouteInfo<void> {
+  const AboutAppRoute({List<PageRouteInfo>? children})
+    : super(AboutAppRoute.name, initialChildren: children);
+
+  static const String name = 'AboutAppRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const AboutAppScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [AboutMeScreen]
+class AboutMeRoute extends PageRouteInfo<void> {
+  const AboutMeRoute({List<PageRouteInfo>? children})
+    : super(AboutMeRoute.name, initialChildren: children);
+
+  static const String name = 'AboutMeRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const AboutMeScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [AuthScreen]
 class AuthRoute extends PageRouteInfo<void> {
   const AuthRoute({List<PageRouteInfo>? children})
@@ -162,6 +194,70 @@ class CommonEmptyStateRouteArgs {
 }
 
 /// generated route for
+/// [CommonModalSheetScreen]
+class CommonModalSheetRoute extends PageRouteInfo<CommonModalSheetRouteArgs> {
+  CommonModalSheetRoute({
+    Key? key,
+    required Widget child,
+    double heightFactor = 0.86,
+    List<PageRouteInfo>? children,
+  }) : super(
+         CommonModalSheetRoute.name,
+         args: CommonModalSheetRouteArgs(
+           key: key,
+           child: child,
+           heightFactor: heightFactor,
+         ),
+         initialChildren: children,
+       );
+
+  static const String name = 'CommonModalSheetRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<CommonModalSheetRouteArgs>();
+      return CommonModalSheetScreen(
+        key: args.key,
+        child: args.child,
+        heightFactor: args.heightFactor,
+      );
+    },
+  );
+}
+
+class CommonModalSheetRouteArgs {
+  const CommonModalSheetRouteArgs({
+    this.key,
+    required this.child,
+    this.heightFactor = 0.86,
+  });
+
+  final Key? key;
+
+  final Widget child;
+
+  final double heightFactor;
+
+  @override
+  String toString() {
+    return 'CommonModalSheetRouteArgs{key: $key, child: $child, heightFactor: $heightFactor}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! CommonModalSheetRouteArgs) return false;
+    return key == other.key &&
+        child == other.child &&
+        heightFactor == other.heightFactor;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ child.hashCode ^ heightFactor.hashCode;
+}
+
+/// generated route for
 /// [EditProfileScreen]
 class EditProfileRoute extends PageRouteInfo<void> {
   const EditProfileRoute({List<PageRouteInfo>? children})
@@ -173,6 +269,22 @@ class EditProfileRoute extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const EditProfileScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [EmployerProfileScreen]
+class EmployerProfileRoute extends PageRouteInfo<void> {
+  const EmployerProfileRoute({List<PageRouteInfo>? children})
+    : super(EmployerProfileRoute.name, initialChildren: children);
+
+  static const String name = 'EmployerProfileRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const EmployerProfileScreen();
     },
   );
 }
@@ -226,6 +338,22 @@ class LaunchRouteV2 extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [LoginScreen]
+class LoginRoute extends PageRouteInfo<void> {
+  const LoginRoute({List<PageRouteInfo>? children})
+    : super(LoginRoute.name, initialChildren: children);
+
+  static const String name = 'LoginRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const LoginScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [MainScreen]
 class MainRoute extends PageRouteInfo<void> {
   const MainRoute({List<PageRouteInfo>? children})
@@ -269,6 +397,22 @@ class RegistrationRoute extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const RegistrationScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [ResumeScreen]
+class ResumeRoute extends PageRouteInfo<void> {
+  const ResumeRoute({List<PageRouteInfo>? children})
+    : super(ResumeRoute.name, initialChildren: children);
+
+  static const String name = 'ResumeRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ResumeScreen();
     },
   );
 }

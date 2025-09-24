@@ -51,7 +51,7 @@ final class LaunchScreenV2State extends State<LaunchScreenV2> {
               break;
 
             case NavigateToLoginScreen():
-              AutoRouter.of(context).push(AuthRoute()).then((_) {
+              AutoRouter.of(context).push(LoginRoute()).then((_) {
                 _launchBloc.add(LaunchV2Content());
               });
               break;

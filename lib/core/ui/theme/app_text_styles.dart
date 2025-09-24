@@ -17,8 +17,22 @@ class AppTextStyles {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle headline21 = TextStyle(
+    fontSize: 21,
+    fontFamily: 'SFRounded',
+    fontWeight: FontWeight.w700,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle headline16 = TextStyle(
     fontSize: 16,
+    fontFamily: 'SFRounded',
+    fontWeight: FontWeight.w600,
+    color: AppColors.textPrimary,
+  );
+
+    static const TextStyle headline12 = TextStyle(
+    fontSize: 12,
     fontFamily: 'SFRounded',
     fontWeight: FontWeight.w600,
     color: AppColors.textPrimary,

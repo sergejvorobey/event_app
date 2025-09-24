@@ -2,7 +2,7 @@ import 'package:event_app/core/logger/talker_config.dart';
 import 'package:event_app/core/network/dio_config.dart';
 import 'package:event_app/core/network/network_sevice_v2.dart';
 import 'package:event_app/core/notification/notification_service.dart';
-import 'package:event_app/event_app.dart';
+import 'package:event_app/app.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,5 +38,5 @@ void main() async {
   FlutterError.onError =
       (details) => getIt<Talker>().handle(details.exception, details.stack);
 
-  runApp(ToastificationWrapper(child: const EventApp()));
+  runApp(ToastificationWrapper(child: const App()));
 }

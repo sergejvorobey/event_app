@@ -4,7 +4,7 @@ import 'package:event_app/core/network/network_sevice_v2.dart';
 import 'package:event_app/core/storage/storage_service.dart';
 import 'package:event_app/features/auth/V1/repository/auth_repository_impl.dart';
 import 'package:event_app/features/auth/V1/repository/model/auth_response.dart';
-import 'package:event_app/features/registration/V1/repository/model/token_response.dart';
+import 'package:event_app/features/auth/registration/V1/repository/model/token_response.dart';
 
 class AuthRepository extends AuthRepositoryImpl {
   final NetworkServiceV2 _networkService;

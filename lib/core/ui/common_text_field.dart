@@ -13,14 +13,17 @@ class CommonTextField extends StatefulWidget {
   final bool isEnabled;
   final int textLimit;
   final ValueChanged<String> onValueChanged;
+  final TextInputType keyboardType;
   final bool isStartIndicator;
   final Color hintColor;
   final bool isSecure;
   final IconData? rightIcon;
+  final double? rightIconSize;
   final VoidCallback? onTapRightIcon;
   final FocusNode? focusNode;
   final bool isFocused;
   final VoidCallback? onTap;
+  final ValueChanged<String>? onSubmitted;
 
   const CommonTextField({
     super.key,
@@ -34,14 +37,17 @@ class CommonTextField extends StatefulWidget {
     this.isEnabled = true,
     this.textLimit = 50,
     required this.onValueChanged,
+    this.keyboardType = TextInputType.text,
     this.isStartIndicator = false,
     this.hintColor = Colors.grey,
     this.isSecure = false,
     this.rightIcon,
+    this.rightIconSize = 16.0,
     this.onTapRightIcon,
     this.focusNode,
     this.isFocused = false,
-    this.onTap
+    this.onTap,
+    this.onSubmitted
   });
 
   @override
@@ -52,7 +58,7 @@ final class CommonTextFieldState extends State<CommonTextField> {
   late TextEditingController _controller;
   late FocusNode _focusNode;
   Color _currentLabelColor = AppColors.textSecondary;
-  Color _currentBackgroundColor = AppColors.greyLight;
+  Color _currentBackgroundColor = AppColors.greyLight.withAlpha(150);
 
   @override
   void initState() {
@@ -82,7 +88,7 @@ final class CommonTextFieldState extends State<CommonTextField> {
       _currentLabelColor =
           _focusNode.hasFocus ? primaryColor : AppColors.textSecondary;
       _currentBackgroundColor =
-          _focusNode.hasFocus ? backgroundColor : AppColors.greyLight;
+          _focusNode.hasFocus ? backgroundColor : AppColors.greyLight.withAlpha(150);
     });
   }
 
@@ -177,9 +183,11 @@ final class CommonTextFieldState extends State<CommonTextField> {
                             enableSuggestions: false,
                             textCapitalization: TextCapitalization.none,
                             autofillHints: const <String>[],
-                            keyboardType: TextInputType.text,
+                            keyboardType: widget.keyboardType,
                             readOnly: widget.onTap != null,
-                            onTap: widget.onTap, 
+                            onTap: widget.onTap,
+                            textInputAction: TextInputAction.done,
+                            onSubmitted: widget.onSubmitted ?? (_) => FocusScope.of(context).unfocus(),
                           ),
                         ],
                       ),
@@ -192,7 +200,7 @@ final class CommonTextFieldState extends State<CommonTextField> {
                         onTap: widget.onTapRightIcon,
                         child: Icon(
                           widget.rightIcon,
-                          size: 20,
+                          size: widget.rightIconSize,
                           color: Colors.grey,
                         ),
                       ),

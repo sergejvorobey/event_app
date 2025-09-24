@@ -3,8 +3,8 @@ import 'package:event_app/core/model/result.dart';
 import 'package:event_app/core/network/network_service.dart';
 import 'package:event_app/core/storage/storage_service.dart';
 import 'package:event_app/features/launch/V2/repository/launch_v2_repository_impl.dart';
-import 'package:event_app/features/profile/model/profile_response.dart';
-import 'package:event_app/features/registration/V1/repository/model/token_response.dart';
+import 'package:event_app/features/user/profile/model/profile_response.dart';
+import 'package:event_app/features/auth/registration/V1/repository/model/token_response.dart';
 
 class LaunchV2Repository extends LaunchV2RepositoryImpl {
   final NetworkService _networkService;
@@ -41,7 +41,7 @@ class LaunchV2Repository extends LaunchV2RepositoryImpl {
       final tokens = TokenResponse(
         accessToken: access,
         refreshToken: refresh,
-        expiresIn: "",
+        expiresAt: "",
       );
       if (access.isNotEmpty) {
         return Success(tokens);

@@ -78,10 +78,64 @@ String validateLastName(String lastName) {
 }
 
 String validateEmail(String email) {
-  if (email.isEmpty) return 'Начните вводить почту';
+  if (email.isEmpty) return ''; // 'Начните вводить почту';
 
   final regex = RegExp("^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})");
   if (!regex.hasMatch(email)) return 'Недопустимый формат почты';
+
+  return "";
+}
+
+String validatePhoneNumber(String phone) {
+  if (phone.isEmpty) return ''; // 'Начните вводить номер телефона';
+
+  // Строго: только +7 и ровно 11 цифр
+  final regex = RegExp(r'^\+7\d{10}$');
+
+  if (!regex.hasMatch(phone)) {
+    return 'Номер телефона должен быть в формате +7XXXXXXXXXX';
+  }
+
+  return "";
+}
+
+String validateTelegramUsername(String username) {
+  if (username.isEmpty) return ''; // 'Начните вводить Telegram-ник';
+
+  if (username.length < 5) {
+    return 'Ник должен содержать минимум 5 символов';
+  }
+
+  if (username.length > 32) {
+    return 'Ник должен содержать максимум 32 символа';
+  }
+
+  final regex = RegExp(r'^[a-zA-Z][a-zA-Z0-9_]*$');
+  if (!regex.hasMatch(username)) {
+    return 'Ник должен начинаться с буквы и содержать только латиницу, цифры и "_"';
+  }
+
+  if (username.startsWith('_') || username.endsWith('_')) {
+    return 'Ник не должен начинаться или заканчиваться "_"';
+  }
+
+  if (username.contains('__')) {
+    return 'Ник не должен содержать подряд два "_"';
+  }
+
+  return "";
+}
+
+String validateProfession(String profession) {
+  if (profession.isEmpty) return ''; // 'Начните вводить профессию';
+  if (profession.length < 3) return 'Профессия должена содержать минимум 3 символа';
+  if (profession.length > 20) return 'Профессия должена содержать максимум 20 символов';
+
+  final regex = RegExp(r'^[a-zA-Z0-9]+$');
+  if (!regex.hasMatch(profession)) return 'Недопустимый формат профессии';
+
+  final digitsOnlyRegex = RegExp(r'^\d+$');
+  if (digitsOnlyRegex.hasMatch(profession)) return 'Профессия не должена состоять только из цифр';
 
   return "";
 }

@@ -35,6 +35,7 @@ generated_plugin_registrant.dart
 generated_plugin_registrant.cc
 generated_plugin_registrant.h
 .melos_tool/
+pubspec.lock
 
 # Symbolication related
 app.*.symbols
@@ -70,6 +71,8 @@ ios/Flutter/ephemeral/
 Profile
 DerivedData/
 .idea/
+ios/Podfile.lock
+ios/Runner.xcodeproj/project.pbxproj
 
 # Web specific
 /web/generated/
@@ -79,15 +82,17 @@ web/.dart_tool/
 # Linux / Windows / macOS build folders
 linux/flutter/ephemeral/
 macos/Flutter/ephemeral/
+macos/Flutter/GeneratedPluginRegistrant.swift
 windows/flutter/ephemeral/
 windows/runner/generated_plugin_registrant.cc
 windows/runner/generated_plugin_registrant.h
+windows/flutter/generated_plugins.cmake
 
 # JSON to Dart Model Generator
 /json_models/
 models.jsonc
 
-# Firebase / Google services (не класть в гит, чувствительные данные)
+# Firebase / Google services
 google-services.json
 GoogleService-Info.plist
 

@@ -9,16 +9,17 @@ class CommonButton extends StatefulWidget {
   final VoidCallback action;
   final bool isEnabled;
   final bool isShowIndicator;
+  final Color color;
 
-  const CommonButton({
-    super.key,
-    required this.title,
-    this.height = 52.0,
-    this.horizontalMargin = 16.0,
-    required this.action,
-    this.isEnabled = false,
-    this.isShowIndicator = false,
-  });
+  const CommonButton(
+      {super.key,
+      required this.title,
+      this.height = 52.0,
+      this.horizontalMargin = 16.0,
+      required this.action,
+      this.isEnabled = false,
+      this.isShowIndicator = false,
+      this.color = AppColors.primary});
 
   @override
   CommonButtonState createState() => CommonButtonState();
@@ -40,25 +41,21 @@ final class CommonButtonState extends State<CommonButton> {
           duration: const Duration(milliseconds: 200),
           curve: Curves.easeOut,
           decoration: BoxDecoration(
-            color:
-                widget.isEnabled
-                    ? (_isPressed
-                        ? AppColors.primary.withAlpha(95)
-                        : AppColors.primary)
-                    : AppColors.primary.withAlpha(200),
+            color: widget.isEnabled
+                ? (_isPressed ? widget.color.withAlpha(95) : widget.color)
+                : widget.color.withAlpha(200),
             borderRadius: BorderRadius.circular(12),
           ),
           width: double.infinity,
           height: widget.height,
           alignment: Alignment.center,
-          child:
-              widget.isShowIndicator
-                  ? CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    strokeWidth: 3.0,
-                    strokeAlign: -3.0,
-                  )
-                  : Text(widget.title, style: AppTextStyles.button),
+          child: widget.isShowIndicator
+              ? CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  strokeWidth: 3.0,
+                  strokeAlign: -3.0,
+                )
+              : Text(widget.title, style: AppTextStyles.button),
         ),
       ),
     );

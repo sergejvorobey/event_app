@@ -45,28 +45,46 @@ class EditprofileBloc extends Bloc<EditprofileEvent, EditprofileState> {
               placeholder: "Введите фамилию",
               message: validateLastName(profileResponse.lastName),
             ),
-            email: CommonTextFieldHandler(
-              value: profileResponse.email,
-              label: "Почта",
-              placeholder: "Введите почту",
-              message: validateEmail(profileResponse.email),
+            birthday: CommonTextFieldHandler(
+              value: profileResponse.birthday,
+              label: "Дата рождения",
+              placeholder: "Введите дату рождения",
+              message: validateBirthday(profileResponse.birthday),
+            ),
+            city: CommonTextFieldHandler(
+              value: profileResponse.location,
+              label: "Город",
+              placeholder: "Введите город",
+              message: validateCity(profileResponse.location),
+            ),
+            phone: CommonTextFieldHandler(
+              value: profileResponse.phone,
+              label: "Телефон",
+              placeholder: "Введите телефон",
+              message: validatePhoneNumber(profileResponse.phone),
+            ),
+            telegram: CommonTextFieldHandler(
+              value: profileResponse.telegramUrl,
+              label: "Telegram",
+              placeholder: "Введите telegram",
+              message: validateTelegramUsername(profileResponse.telegramUrl),
+            ),
+            max: CommonTextFieldHandler(
+              value: profileResponse.maxUrl,
+              label: "MAX",
+              placeholder: "Введите MAX",
+              message: validateMaxUsername(profileResponse.maxUrl),
             ),
             saveButton: CommonButtonHandler(
               title: "Сохранить",
               isEnabled: false,
               isStartActivityIndicator: false,
             ),
-            city: CommonTextFieldHandler(
-              value: profileResponse.city,
-              label: "Город",
-              placeholder: "Введите город",
-              message: "",
-            ),
           ),
         );
       case Failure():
         emit(
-          EditprofileError(
+          ShowEmptyStateScreen(
             title: "Ошибка",
             subtitle: "Что-то пошло не так, попробуйте еще раз",
             actionTitle: "Обновить",
@@ -112,12 +130,12 @@ class EditprofileBloc extends Bloc<EditprofileEvent, EditprofileState> {
     final currentState = state;
     if (currentState is! EditprofileContent) return;
 
-    final updatedEmail = currentState.email.copyWith(
-      value: event.email,
-      message: validateEmail(event.email),
-    );
+    // final updatedEmail = currentState.email.copyWith(
+    //   value: event.email,
+    //   message: validateEmail(event.email),
+    // );
 
-    emit(currentState.copyWith(email: updatedEmail));
+    // emit(currentState.copyWith(email: updatedEmail));
   }
 
   void _onSaveButtonPressed(
@@ -131,8 +149,10 @@ class EditprofileBloc extends Bloc<EditprofileEvent, EditprofileState> {
     final result = await _editprofileRepository.updateProfile(
       currentState.firstName.value,
       currentState.lastName.value,
-      currentState.city.value,
-      currentState.email.value,
+      "",
+      "",
+      // currentState.city.value,
+      // currentState.email.value,
     );
 
     switch (result) {
@@ -163,11 +183,11 @@ class EditprofileBloc extends Bloc<EditprofileEvent, EditprofileState> {
     final currentState = state;
     if (currentState is! EditprofileContent) return;
 
-    final updatedCity = currentState.city.copyWith(
-      value: event.city,
-      message: "",
-    );
+    // final updatedCity = currentState.city.copyWith(
+    //   value: event.city,
+    //   message: "",
+    // );
 
-    emit(currentState.copyWith(city: updatedCity));
+    // emit(currentState.copyWith(city: updatedCity));
   }
 }

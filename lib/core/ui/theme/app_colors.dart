@@ -4,7 +4,7 @@ class AppColors {
   // Основные цвета
   static const Color primary = Color(0xFF6C63FF); // Фиолетовый (акцент)
   static const Color secondary = Color(0xFF4A44B7); // Темно-фиолетовый
-  static const Color background = Colors.white;
+  static const Color background = Color(0xFFF8FAFC);
   static const Color backgroundSecondary = Colors.black; // Светлый фон
   static const Color surface = Color(0xFFFFFFFF); // Карточки, панели
 
@@ -21,4 +21,7 @@ class AppColors {
   // Дополнительные
   static const Color greyLight = Color(0xFFE9ECEF);
   static const Color greyDark = Color(0xFF495057);
+
+  // Кнопки
+  static const Color secondaryCommonButton = Color(0xFF0F172A);
 }

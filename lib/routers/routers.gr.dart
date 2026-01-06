@@ -14,7 +14,7 @@ part of 'routers.dart';
 /// [AboutAppScreen]
 class AboutAppRoute extends PageRouteInfo<void> {
   const AboutAppRoute({List<PageRouteInfo>? children})
-    : super(AboutAppRoute.name, initialChildren: children);
+      : super(AboutAppRoute.name, initialChildren: children);
 
   static const String name = 'AboutAppRoute';
 
@@ -30,7 +30,7 @@ class AboutAppRoute extends PageRouteInfo<void> {
 /// [AboutMeScreen]
 class AboutMeRoute extends PageRouteInfo<void> {
   const AboutMeRoute({List<PageRouteInfo>? children})
-    : super(AboutMeRoute.name, initialChildren: children);
+      : super(AboutMeRoute.name, initialChildren: children);
 
   static const String name = 'AboutMeRoute';
 
@@ -46,7 +46,7 @@ class AboutMeRoute extends PageRouteInfo<void> {
 /// [AuthScreen]
 class AuthRoute extends PageRouteInfo<void> {
   const AuthRoute({List<PageRouteInfo>? children})
-    : super(AuthRoute.name, initialChildren: children);
+      : super(AuthRoute.name, initialChildren: children);
 
   static const String name = 'AuthRoute';
 
@@ -66,10 +66,10 @@ class CityRoute extends PageRouteInfo<CityRouteArgs> {
     String? selectedCityTitle,
     List<PageRouteInfo>? children,
   }) : super(
-         CityRoute.name,
-         args: CityRouteArgs(key: key, selectedCityTitle: selectedCityTitle),
-         initialChildren: children,
-       );
+          CityRoute.name,
+          args: CityRouteArgs(key: key, selectedCityTitle: selectedCityTitle),
+          initialChildren: children,
+        );
 
   static const String name = 'CityRoute';
 
@@ -119,18 +119,20 @@ class CommonEmptyStateRoute extends PageRouteInfo<CommonEmptyStateRouteArgs> {
     required String subtitle,
     required String actionTitle,
     required VoidCallback action,
+    VoidCallback? closeAction,
     List<PageRouteInfo>? children,
   }) : super(
-         CommonEmptyStateRoute.name,
-         args: CommonEmptyStateRouteArgs(
-           key: key,
-           title: title,
-           subtitle: subtitle,
-           actionTitle: actionTitle,
-           action: action,
-         ),
-         initialChildren: children,
-       );
+          CommonEmptyStateRoute.name,
+          args: CommonEmptyStateRouteArgs(
+            key: key,
+            title: title,
+            subtitle: subtitle,
+            actionTitle: actionTitle,
+            action: action,
+            closeAction: closeAction,
+          ),
+          initialChildren: children,
+        );
 
   static const String name = 'CommonEmptyStateRoute';
 
@@ -144,6 +146,7 @@ class CommonEmptyStateRoute extends PageRouteInfo<CommonEmptyStateRouteArgs> {
         subtitle: args.subtitle,
         actionTitle: args.actionTitle,
         action: args.action,
+        closeAction: args.closeAction,
       );
     },
   );
@@ -156,6 +159,7 @@ class CommonEmptyStateRouteArgs {
     required this.subtitle,
     required this.actionTitle,
     required this.action,
+    this.closeAction,
   });
 
   final Key? key;
@@ -168,9 +172,11 @@ class CommonEmptyStateRouteArgs {
 
   final VoidCallback action;
 
+  final VoidCallback? closeAction;
+
   @override
   String toString() {
-    return 'CommonEmptyStateRouteArgs{key: $key, title: $title, subtitle: $subtitle, actionTitle: $actionTitle, action: $action}';
+    return 'CommonEmptyStateRouteArgs{key: $key, title: $title, subtitle: $subtitle, actionTitle: $actionTitle, action: $action, closeAction: $closeAction}';
   }
 
   @override
@@ -181,7 +187,8 @@ class CommonEmptyStateRouteArgs {
         title == other.title &&
         subtitle == other.subtitle &&
         actionTitle == other.actionTitle &&
-        action == other.action;
+        action == other.action &&
+        closeAction == other.closeAction;
   }
 
   @override
@@ -190,7 +197,8 @@ class CommonEmptyStateRouteArgs {
       title.hashCode ^
       subtitle.hashCode ^
       actionTitle.hashCode ^
-      action.hashCode;
+      action.hashCode ^
+      closeAction.hashCode;
 }
 
 /// generated route for
@@ -202,14 +210,14 @@ class CommonModalSheetRoute extends PageRouteInfo<CommonModalSheetRouteArgs> {
     double heightFactor = 0.86,
     List<PageRouteInfo>? children,
   }) : super(
-         CommonModalSheetRoute.name,
-         args: CommonModalSheetRouteArgs(
-           key: key,
-           child: child,
-           heightFactor: heightFactor,
-         ),
-         initialChildren: children,
-       );
+          CommonModalSheetRoute.name,
+          args: CommonModalSheetRouteArgs(
+            key: key,
+            child: child,
+            heightFactor: heightFactor,
+          ),
+          initialChildren: children,
+        );
 
   static const String name = 'CommonModalSheetRoute';
 
@@ -261,7 +269,7 @@ class CommonModalSheetRouteArgs {
 /// [EditProfileScreen]
 class EditProfileRoute extends PageRouteInfo<void> {
   const EditProfileRoute({List<PageRouteInfo>? children})
-    : super(EditProfileRoute.name, initialChildren: children);
+      : super(EditProfileRoute.name, initialChildren: children);
 
   static const String name = 'EditProfileRoute';
 
@@ -277,7 +285,7 @@ class EditProfileRoute extends PageRouteInfo<void> {
 /// [EmployerProfileScreen]
 class EmployerProfileRoute extends PageRouteInfo<void> {
   const EmployerProfileRoute({List<PageRouteInfo>? children})
-    : super(EmployerProfileRoute.name, initialChildren: children);
+      : super(EmployerProfileRoute.name, initialChildren: children);
 
   static const String name = 'EmployerProfileRoute';
 
@@ -293,7 +301,7 @@ class EmployerProfileRoute extends PageRouteInfo<void> {
 /// [HomeScreen]
 class HomeRoute extends PageRouteInfo<void> {
   const HomeRoute({List<PageRouteInfo>? children})
-    : super(HomeRoute.name, initialChildren: children);
+      : super(HomeRoute.name, initialChildren: children);
 
   static const String name = 'HomeRoute';
 
@@ -309,7 +317,7 @@ class HomeRoute extends PageRouteInfo<void> {
 /// [LaunchScreen]
 class LaunchRoute extends PageRouteInfo<void> {
   const LaunchRoute({List<PageRouteInfo>? children})
-    : super(LaunchRoute.name, initialChildren: children);
+      : super(LaunchRoute.name, initialChildren: children);
 
   static const String name = 'LaunchRoute';
 
@@ -325,7 +333,7 @@ class LaunchRoute extends PageRouteInfo<void> {
 /// [LaunchScreenV2]
 class LaunchRouteV2 extends PageRouteInfo<void> {
   const LaunchRouteV2({List<PageRouteInfo>? children})
-    : super(LaunchRouteV2.name, initialChildren: children);
+      : super(LaunchRouteV2.name, initialChildren: children);
 
   static const String name = 'LaunchRouteV2';
 
@@ -338,10 +346,26 @@ class LaunchRouteV2 extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [LaunchScreenV3]
+class LaunchRouteV3 extends PageRouteInfo<void> {
+  const LaunchRouteV3({List<PageRouteInfo>? children})
+      : super(LaunchRouteV3.name, initialChildren: children);
+
+  static const String name = 'LaunchRouteV3';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const LaunchScreenV3();
+    },
+  );
+}
+
+/// generated route for
 /// [LoginScreen]
 class LoginRoute extends PageRouteInfo<void> {
   const LoginRoute({List<PageRouteInfo>? children})
-    : super(LoginRoute.name, initialChildren: children);
+      : super(LoginRoute.name, initialChildren: children);
 
   static const String name = 'LoginRoute';
 
@@ -357,7 +381,7 @@ class LoginRoute extends PageRouteInfo<void> {
 /// [MainScreen]
 class MainRoute extends PageRouteInfo<void> {
   const MainRoute({List<PageRouteInfo>? children})
-    : super(MainRoute.name, initialChildren: children);
+      : super(MainRoute.name, initialChildren: children);
 
   static const String name = 'MainRoute';
 
@@ -370,10 +394,26 @@ class MainRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [OnboardingScreen]
+class OnboardingRoute extends PageRouteInfo<void> {
+  const OnboardingRoute({List<PageRouteInfo>? children})
+      : super(OnboardingRoute.name, initialChildren: children);
+
+  static const String name = 'OnboardingRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const OnboardingScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [ProfileScreen]
 class ProfileRoute extends PageRouteInfo<void> {
   const ProfileRoute({List<PageRouteInfo>? children})
-    : super(ProfileRoute.name, initialChildren: children);
+      : super(ProfileRoute.name, initialChildren: children);
 
   static const String name = 'ProfileRoute';
 
@@ -389,7 +429,7 @@ class ProfileRoute extends PageRouteInfo<void> {
 /// [RegistrationScreen]
 class RegistrationRoute extends PageRouteInfo<void> {
   const RegistrationRoute({List<PageRouteInfo>? children})
-    : super(RegistrationRoute.name, initialChildren: children);
+      : super(RegistrationRoute.name, initialChildren: children);
 
   static const String name = 'RegistrationRoute';
 
@@ -405,7 +445,7 @@ class RegistrationRoute extends PageRouteInfo<void> {
 /// [ResumeScreen]
 class ResumeRoute extends PageRouteInfo<void> {
   const ResumeRoute({List<PageRouteInfo>? children})
-    : super(ResumeRoute.name, initialChildren: children);
+      : super(ResumeRoute.name, initialChildren: children);
 
   static const String name = 'ResumeRoute';
 
@@ -421,7 +461,7 @@ class ResumeRoute extends PageRouteInfo<void> {
 /// [SettingsScreen]
 class SettingsRoute extends PageRouteInfo<void> {
   const SettingsRoute({List<PageRouteInfo>? children})
-    : super(SettingsRoute.name, initialChildren: children);
+      : super(SettingsRoute.name, initialChildren: children);
 
   static const String name = 'SettingsRoute';
 

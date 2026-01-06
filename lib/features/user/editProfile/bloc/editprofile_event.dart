@@ -59,3 +59,10 @@ class CityChanged extends EditprofileEvent {
   @override
   List<Object> get props => [city];
 }
+
+class NavigateToEditProfileScreen extends EditprofileEvent {
+  const NavigateToEditProfileScreen();
+
+  @override
+  List<Object> get props => [];
+}

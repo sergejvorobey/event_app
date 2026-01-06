@@ -30,78 +30,78 @@ class ResumeBloc extends Bloc<ResumeEvent, ResumeState> {
     final result = await _resumeRepository.fetchProfile();
     switch (result) {
       case Success(value: final profileResponse):
-        emit(
-          ResumeContent(
-            login: CommonTextFieldHandler(
-              value: profileResponse.login,
-              label: "",
-              placeholder: "",
-              message: "",
-            ),
-            city: CommonTextFieldHandler(
-              value:
-                  profileResponse.city.isEmpty
-                      ? "Город не указан"
-                      : profileResponse.city,
-              label: "",
-              placeholder: "",
-              message: "",
-            ),
-            firstName: CommonTextFieldHandler(
-              value: profileResponse.firstName,
-              label: "Имя",
-              placeholder: "Введите имя",
-              message: validateFirstName(profileResponse.firstName),
-            ),
-            lastName: CommonTextFieldHandler(
-              value: profileResponse.lastName,
-              label: "Фамилия",
-              placeholder: "Введите фамилию",
-              message: validateLastName(profileResponse.lastName),
-            ),
-            phoneNumber: CommonTextFieldHandler(
-              value:
-                  profileResponse.phoneNumber.isEmpty
-                      ? "Не указан"
-                      : profileResponse.phoneNumber,
-              label: "Номер телефона",
-              placeholder: "Введите номер телефона",
-              message: validatePhoneNumber(profileResponse.phoneNumber),
-            ),
-            email: CommonTextFieldHandler(
-              value:
-                  profileResponse.email.isEmpty
-                      ? "Не указано"
-                      : profileResponse.email,
-              label: "Почта",
-              placeholder: "Введите почту",
-              message: validateEmail(profileResponse.email),
-            ),
-            telegram: CommonTextFieldHandler(
-              value: "Не указано", // profileResponse.telegram,
-              label: "Telegram",
-              placeholder: "Введите никнейм telegram",
-              message: validateTelegramUsername(""), // profileResponse.telegram
-            ),
-            max: CommonTextFieldHandler(
-              value: "Не указано", // profileResponse.telegram,
-              label: "MAX",
-              placeholder: "Введите никнейм max",
-              message: validateTelegramUsername(""), // profileResponse.max
-            ),
-            profession: CommonTextFieldHandler(
-              value: "", // profileResponse.profession,
-              label: "Профессия",
-              placeholder: "Выберите профессию",
-              message: validateProfession(""), // profileResponse.profession
-            ),
-            saveButton: CommonButtonHandler(
-              title: "Сохранить",
-              isEnabled: false,
-              isStartActivityIndicator: false,
-            ),
-          ),
-        );
+      // emit(
+      //   ResumeContent(
+      //     login: CommonTextFieldHandler(
+      //       value: profileResponse.login,
+      //       label: "",
+      //       placeholder: "",
+      //       message: "",
+      //     ),
+      //     city: CommonTextFieldHandler(
+      //       value:
+      //           profileResponse.city.isEmpty
+      //               ? "Город не указан"
+      //               : profileResponse.city,
+      //       label: "",
+      //       placeholder: "",
+      //       message: "",
+      //     ),
+      //     firstName: CommonTextFieldHandler(
+      //       value: profileResponse.firstName,
+      //       label: "Имя",
+      //       placeholder: "Введите имя",
+      //       message: validateFirstName(profileResponse.firstName),
+      //     ),
+      //     lastName: CommonTextFieldHandler(
+      //       value: profileResponse.lastName,
+      //       label: "Фамилия",
+      //       placeholder: "Введите фамилию",
+      //       message: validateLastName(profileResponse.lastName),
+      //     ),
+      //     phoneNumber: CommonTextFieldHandler(
+      //       value:
+      //           profileResponse.phoneNumber.isEmpty
+      //               ? "Не указан"
+      //               : profileResponse.phoneNumber,
+      //       label: "Номер телефона",
+      //       placeholder: "Введите номер телефона",
+      //       message: validatePhoneNumber(profileResponse.phoneNumber),
+      //     ),
+      //     email: CommonTextFieldHandler(
+      //       value:
+      //           profileResponse.email.isEmpty
+      //               ? "Не указано"
+      //               : profileResponse.email,
+      //       label: "Почта",
+      //       placeholder: "Введите почту",
+      //       message: validateEmail(profileResponse.email),
+      //     ),
+      //     telegram: CommonTextFieldHandler(
+      //       value: "Не указано", // profileResponse.telegram,
+      //       label: "Telegram",
+      //       placeholder: "Введите никнейм telegram",
+      //       message: validateTelegramUsername(""), // profileResponse.telegram
+      //     ),
+      //     max: CommonTextFieldHandler(
+      //       value: "Не указано", // profileResponse.telegram,
+      //       label: "MAX",
+      //       placeholder: "Введите никнейм max",
+      //       message: validateTelegramUsername(""), // profileResponse.max
+      //     ),
+      //     profession: CommonTextFieldHandler(
+      //       value: "", // profileResponse.profession,
+      //       label: "Профессия",
+      //       placeholder: "Выберите профессию",
+      //       message: validateProfession(""), // profileResponse.profession
+      //     ),
+      //     saveButton: CommonButtonHandler(
+      //       title: "Сохранить",
+      //       isEnabled: false,
+      //       isStartActivityIndicator: false,
+      //     ),
+      //   ),
+      // );
       case Failure():
         emit(
           ResumeError(

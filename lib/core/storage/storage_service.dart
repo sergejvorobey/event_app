@@ -5,6 +5,7 @@ import 'package:talker_flutter/talker_flutter.dart';
 class StorageService {
   static const _accessTokenKey = 'access_token';
   static const _refreshTokenKey = 'refresh_token';
+  static const _onboardingCompletedKey = 'is_onboarding_completed';
 
   /// Сохраняет access и refresh токены
   Future<void> saveTokens({
@@ -36,5 +37,27 @@ class StorageService {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_accessTokenKey);
     await prefs.remove(_refreshTokenKey);
+  }
+
+  /// Пройден онбординг
+  Future<bool> get isOnboardingCompleted async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_onboardingCompletedKey) ?? false;
+  }
+
+  /// Установить флаг завершения онбординга
+  Future<void> setOnboardingCompleted(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_onboardingCompletedKey, value);
+  }
+
+  /// Завершить онбординг (удобный метод)
+  Future<void> completeOnboarding() async {
+    await setOnboardingCompleted(true);
+  }
+
+  /// Сбросить флаг онбординга
+  Future<void> resetOnboarding() async {
+    await setOnboardingCompleted(false);
   }
 }

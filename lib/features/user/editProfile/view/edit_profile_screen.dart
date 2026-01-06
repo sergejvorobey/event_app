@@ -23,8 +23,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final EditprofileBloc _editProfileBloc = EditprofileBloc();
   final FocusNode _firstNameTextFieldFocusNode = FocusNode();
   final FocusNode _lastNameTextFieldFocusNode = FocusNode();
-  final FocusNode _emailTextFieldFocusNode = FocusNode();
+  final FocusNode _birthdayTextFieldFocusNode = FocusNode();
   final FocusNode _cityTextFieldFocusNode = FocusNode();
+  final FocusNode _phoneTextFieldFocusNode = FocusNode();
+  final FocusNode _telegramTextFieldFocusNode = FocusNode();
+  final FocusNode _maxTextFieldFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -38,7 +41,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _editProfileBloc.close();
     _firstNameTextFieldFocusNode.dispose();
     _lastNameTextFieldFocusNode.dispose();
-    _emailTextFieldFocusNode.dispose();
+    _birthdayTextFieldFocusNode.dispose();
     _cityTextFieldFocusNode.dispose();
   }
 
@@ -67,6 +70,27 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               :final message,
             ):
               showToast(title: title, message: message, type: type);
+              break;
+            case ShowEmptyStateScreen(
+              title: final title,
+              subtitle: final subtitle,
+              actionTitle: final actionTitle,
+            ):
+              AutoRouter.of(context).push(
+                CommonEmptyStateRoute(
+                  title: title,
+                  subtitle: subtitle,
+                  actionTitle: actionTitle,
+                  closeAction: () {
+                    AutoRouter.of(context).pop();
+                    AutoRouter.of(context).pop();
+                  },
+                  action: () {
+                    AutoRouter.of(context).pop();
+                    _editProfileBloc.add(FetchProfile());
+                  },
+                ),
+              );
               break;
           }
         },
@@ -110,19 +134,30 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             hintColor: Colors.grey,
             focusNode: _lastNameTextFieldFocusNode,
           ),
-          // CommonTextField(
-          //   value: state.email.value,
-          //   label: state.email.label,
-          //   placeholder: state.email.placeholder,
-          //   hint: state.email.message,
-          //   onValueChanged: _onEmailTextChanged,
-          //   hintColor: Colors.grey,
-          //   focusNode: _emailTextFieldFocusNode,
-          // ),
+          CommonTextField(
+            value: state.birthday.value,
+            label: state.birthday.label,
+            placeholder: state.birthday.placeholder,
+            hint: state.birthday.message,
+            onValueChanged: (_) {},
+            rightIcon: CupertinoIcons.chevron_right,
+            hintColor: Colors.grey,
+            focusNode: _birthdayTextFieldFocusNode,
+            onTap: () async {
+              // final selectedCity = await AutoRouter.of(
+              //   context,
+              // ).push<City>(CityRoute(selectedCityTitle: state.city.value));
+
+              // if (selectedCity != null && mounted) {
+              //   _editProfileBloc.add(CityChanged(selectedCity.title));
+              // }
+            },
+          ),
           CommonTextField(
             value: state.city.value,
             label: state.city.label,
             placeholder: state.city.placeholder,
+            hint: state.city.message,
             onValueChanged: (_) {},
             rightIcon: CupertinoIcons.chevron_right,
             focusNode: _cityTextFieldFocusNode,
@@ -135,6 +170,39 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 _editProfileBloc.add(CityChanged(selectedCity.title));
               }
             },
+          ),
+          CommonTextField(
+            value: state.phone.value,
+            label: state.phone.label,
+            placeholder: state.phone.placeholder,
+            hint: state.phone.message,
+            onValueChanged: (_) {},
+            rightIcon: CupertinoIcons.chevron_right,
+            hintColor: Colors.grey,
+            focusNode: _phoneTextFieldFocusNode,
+            onTap: () {},
+          ),
+          CommonTextField(
+            value: state.telegram.value,
+            label: state.telegram.label,
+            placeholder: state.telegram.placeholder,
+            hint: state.telegram.message,
+            onValueChanged: (_) {},
+            rightIcon: CupertinoIcons.chevron_right,
+            hintColor: Colors.grey,
+            focusNode: _telegramTextFieldFocusNode,
+            onTap: () {},
+          ),
+          CommonTextField(
+            value: state.max.value,
+            label: state.max.label,
+            placeholder: state.max.placeholder,
+            hint: state.max.message,
+            onValueChanged: (_) {},
+            rightIcon: CupertinoIcons.chevron_right,
+            hintColor: Colors.grey,
+            focusNode: _maxTextFieldFocusNode,
+            onTap: () {},
           ),
         ],
       ),
@@ -150,13 +218,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           isShowIndicator: state.saveButton.isStartActivityIndicator,
           isEnabled: state.saveButton.isEnabled,
           action: () {
-            _editProfileBloc.add(
-              SaveButtonPressed(
-                firstName: state.firstName.value,
-                lastName: state.lastName.value,
-                email: state.email.value,
-              ),
-            );
+            // _editProfileBloc.add(
+            //   SaveButtonPressed(
+            //     firstName: state.firstName.value,
+            //     lastName: state.lastName.value,
+            //     email: state.email.value,
+            //   ),
+            // );
           },
         ),
       ),
@@ -171,7 +239,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _editProfileBloc.add(LastNameChanged(value));
   }
 
-  void _onEmailTextChanged(String value) {
-    _editProfileBloc.add(EmailChanged(value));
+  void _onBirthdayTextChanged(String value) {
+    // _editProfileBloc.add(EmailChanged(value));
   }
 }

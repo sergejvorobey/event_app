@@ -12,7 +12,7 @@ class EditprofileRepository extends EditprofileRepositoryImpl {
   Future<Result<ProfileResponse>> fetchProfile() async {
     try {
       final response = await _networkService.request(
-        path: "profile",
+        path: "profile/me",
         method: HttpMethod.get,
       );
 

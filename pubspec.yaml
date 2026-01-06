@@ -4,15 +4,15 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.7.2
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  http: ^1.1.0
-  dio: ^5.8.0+1
-  flutter_bloc: ^9.1.1
+  http: ^1.3.0  # ОБНОВИТЬ
+  dio: ^5.5.0  # ОБНОВИТЬ
+  flutter_bloc: ^9.1.1  # ОБНОВИТЬ
   equatable: ^2.0.7
   shared_preferences: ^2.5.3
   get_it: ^8.0.3
@@ -20,19 +20,20 @@ dependencies:
   talker_bloc_logger: ^4.8.3
   talker_dio_logger: ^4.8.3
   json_annotation: ^4.9.0
-  auto_route: ^10.1.0+1
+  auto_route: ^11.0.0  # ОБНОВИТЬ ВАЖНО!
   toastification: ^3.0.2
   app_settings: ^6.1.1
   permission_handler: ^12.0.0+1
   package_info_plus: ^8.0.2
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
   json_serializable: ^6.9.5
-  build_runner: ^2.4.15
-  auto_route_generator: ^10.2.3
+  build_runner: ^2.5.2  # ОБНОВИТЬ
+  auto_route_generator: ^10.4.0  # ОБНОВИТЬ ВАЖНО!
   mockito: ^5.4.4
 
 flutter:
@@ -46,15 +47,12 @@ flutter:
         - asset: assets/fonts/SF-Pro-Rounded-Regular.otf
         - asset: assets/fonts/SF-Pro-Rounded-Medium.otf
           weight: 500
-
         - asset: assets/fonts/SF-Pro-Rounded-Bold.otf
           weight: 700
-
     - family: 'SFProDisplay'
       fonts:
         - asset: assets/fonts/SF-Pro-Display-Regular.otf
         - asset: assets/fonts/SF-Pro-Display-Medium.otf
           weight: 500
-          
         - asset: assets/fonts/SF-Pro-Display-Bold.otf
           weight: 700

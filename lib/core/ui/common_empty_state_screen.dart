@@ -11,6 +11,7 @@ class CommonEmptyStateScreen extends StatefulWidget {
   final String subtitle;
   final String actionTitle;
   final VoidCallback action;
+  final VoidCallback? closeAction;
 
   const CommonEmptyStateScreen({
     super.key,
@@ -18,6 +19,7 @@ class CommonEmptyStateScreen extends StatefulWidget {
     required this.subtitle,
     required this.actionTitle,
     required this.action,
+    this.closeAction,
   });
 
   @override
@@ -28,14 +30,31 @@ final class CommonEmptyStateScreenState extends State<CommonEmptyStateScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(44),
+        child: CupertinoNavigationBar(
+          leading: Text(""),
+          middle: Text(""),
+          backgroundColor: Colors.transparent,
+          border: null,
+          trailing: CupertinoButton(
+            padding: EdgeInsets.zero,
+            onPressed: widget.closeAction ?? () => context.router.maybePop(),
+            child: const Text(
+              "Закрыть",
+              style: TextStyle(color: AppColors.primary),
+            ),
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
             spacing: 8.0,
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const Spacer(),
+              const SizedBox(height: 78),
               Container(
                 width: 64,
                 height: 64,

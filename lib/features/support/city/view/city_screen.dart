@@ -31,8 +31,9 @@ class _CityScreenState extends State<CityScreen> {
     return Scaffold(
       appBar: CupertinoNavigationBar(
         middle: const Text('Город'),
-        leading: CupertinoButton(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+        leading: Text(""),
+        trailing: CupertinoButton(
+          padding: const EdgeInsets.symmetric(horizontal: 0),
           onPressed: () => Navigator.of(context).pop(),
           child: Text("Закрыть"),
         ),
